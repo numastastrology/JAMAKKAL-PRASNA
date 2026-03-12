@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+reportlab
+matplotlib
+pandas
+ephem
+pydantic
+python-multipart
+jinja2

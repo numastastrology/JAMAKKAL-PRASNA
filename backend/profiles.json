@@ -1,0 +1,72 @@
+[
+  {
+    "id": "1772202156646",
+    "name": "YUDHAAI",
+    "gender": "Male",
+    "birth_date": "1972-10-12",
+    "birth_time": "22:00",
+    "birth_place": "Madurai, Madurai South, மதுரை மாவட்டம், Tamil Nadu, India",
+    "lat": 9.9261153,
+    "lon": 78.1140983
+  },
+  {
+    "id": "1772201346911",
+    "name": "S RASEGHA",
+    "gender": "Female",
+    "birth_date": "1998-04-12",
+    "birth_time": "07:59",
+    "birth_place": "Chennai, சென்னை மாவட்டம், Tamil Nadu, India",
+    "lat": 13.0836939,
+    "lon": 80.270186
+  },
+  {
+    "id": "1771900689800",
+    "name": "SAMPLE STOMACH ISSUE",
+    "gender": "Female",
+    "birth_date": "2009-04-09",
+    "birth_time": "22:58",
+    "birth_place": "Chengalpattu, Tamil Nadu, 603001, India",
+    "lat": 12.6840886,
+    "lon": 79.9836371
+  },
+  {
+    "id": "1771861047894",
+    "name": "M MANIVANNAN",
+    "gender": "Male",
+    "birth_date": "1977-05-07",
+    "birth_time": "11:54",
+    "birth_place": "Devakottai, சிவகங்கை மாவட்டம், Tamil Nadu, India",
+    "lat": 9.8960898,
+    "lon": 78.8066602
+  },
+  {
+    "id": "1771834307368",
+    "name": "SAMPLE",
+    "gender": "Male",
+    "birth_date": "1975-10-21",
+    "birth_time": "01:10",
+    "birth_place": "Navi Mumbai, Thane Subdistrict, Thane, Maharashtra, India",
+    "lat": 19.0308262,
+    "lon": 73.0198537
+  },
+  {
+    "id": "1771777394833",
+    "name": "C HEMALATHA",
+    "gender": "Female",
+    "birth_date": "1977-03-28",
+    "birth_time": "16:17",
+    "birth_place": "Gudiyatham, Vellore, Tamil Nadu, 635803, India",
+    "lat": 12.9485676,
+    "lon": 78.8705336
+  },
+  {
+    "id": "1771681371299",
+    "name": "RAJAGOPAL KANNAN",
+    "gender": "Male",
+    "birth_date": "1972-03-23",
+    "birth_time": "09:00",
+    "birth_place": "Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, India",
+    "lat": 12.9767936,
+    "lon": 77.590082
+  }
+]
