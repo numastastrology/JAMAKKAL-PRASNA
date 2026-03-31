@@ -440,13 +440,10 @@ class JamakkalEngine:
             if jg_in_rasi:
                 pl = ", ".join(jg_in_rasi)
             else:
-                opp_rasi = rasi + 6 if rasi <= 6 else rasi - 6
-                # Phase 2: Aspecting Planet (7th house)
-                for jg, jinfo in jama_positions.items():
-                    if jinfo["rasi_num"] == opp_rasi:
-                        jg_in_rasi.append(jg.replace("Jama ", "").upper())
-                if jg_in_rasi:
-                    pl = ", ".join(jg_in_rasi)
+                # Phase 2: Nakshatra Lord of the star
+                nak_lord = point_info.get("star_lord")
+                if nak_lord:
+                    pl = nak_lord.upper()
                 else:
                     # Phase 3: Rasi Lord
                     pl = lords_map[rasi].upper()
