@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { FileDown, RefreshCw, Info, Award, Clock, Sparkles, Activity, Shield, Zap, Globe, Sun, Layers } from 'lucide-react';
 import { downloadPDF } from '../api';
 import type { PrasnaResponse } from '../types';
+import { PrasannaTable } from './PrasannaTable';
 
 interface Props {
     result: PrasnaResponse;
@@ -370,6 +371,13 @@ const ResultDashboard: React.FC<Props> = ({ result, onReset, lang }) => {
                         </div>
                     </div>
                 </div>
+
+                {/* Prasanna Details Special Table */}
+                {result.prasanna_special && (
+                    <div style={{ marginBottom: '4rem', display: 'flex', justifyContent: 'center' }}>
+                        <PrasannaTable data={result.prasanna_special} />
+                    </div>
+                )}
 
                 {/* 2.5 Natal Profile Connection */}
                 <div className="glass-panel" style={{ padding: '1.5rem', background: 'rgba(194,151,49,0.05)', border: '1px solid rgba(194,151,49,0.2)', marginBottom: '3rem' }}>

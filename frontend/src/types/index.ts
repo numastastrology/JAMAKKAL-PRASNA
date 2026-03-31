@@ -36,6 +36,23 @@ export interface CategoryData {
     solutions: string[];
 }
 
+export interface PrasannaSpecial {
+    udhayam: { planet: string; percent: number };
+    udhayam_lord: { planet: string; bhava: number };
+    arudam_bhava: number;
+    arudam: { planet: string; percent: number };
+    kavipu: { planet: string; percent: number };
+    kavipu_bhava: number;
+    exalted: string[];
+    debilitated: string[];
+    parivarthana: string[];
+    kuligan_bhava: number;
+    kuligan: { planet: string; percent: number };
+    emakandam: { planet: string; percent: number };
+    rahu_time: { planet: string; percent: number };
+    mrithyu: { planet: string; percent: number };
+}
+
 export interface PrasnaResponse {
     name?: string;
     gender?: string;
@@ -58,6 +75,7 @@ export interface PrasnaResponse {
     transits: Record<string, TransitInfo>;
     jama_grahas: Record<string, number>;
     inner_planets: Record<string, TransitInfo>;
+    prasanna_special?: PrasannaSpecial;
     sunrise_str?: string;
     sunset_str?: string;
     natal: NatalData;
