@@ -25,6 +25,21 @@ const COUNTRIES_LIST = [
     "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Armenia", "Austria", "Azerbaijan", "Bahamas", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "Indonesia", "Iran", "Iraq", "Israel", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Nauru", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway", "Palau", "Palestine", "Panama", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Korea", "South Sudan", "Spain", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Ukraine", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia"
 ].sort();
 
+const IPL_2026_TEAMS = [
+    "Chennai Super Kings (CSK)",
+    "Delhi Capitals (DC)",
+    "Gujarat Titans (GT)",
+    "Kolkata Knight Riders (KKR)",
+    "Lucknow Super Giants (LSG)",
+    "Mumbai Indians (MI)",
+    "Punjab Kings (PBKS)",
+    "Rajasthan Royals (RR)",
+    "Royal Challengers Bengaluru (RCB)",
+    "Sunrisers Hyderabad (SRH)"
+].sort();
+
+const ALL_COMPETITION_TEAMS = [...COUNTRIES_LIST, ...IPL_2026_TEAMS];
+
 const TEAM_CAPTAINS: Record<string, string[]> = {
     "India": ["Suryakumar Yadav", "Shubman Gill", "Rohit Sharma", "Hardik Pandya", "KL Rahul", "Rishabh Pant"],
     "Australia": ["Mitchell Marsh", "Pat Cummins", "Steve Smith", "Travis Head"],
@@ -46,7 +61,27 @@ const TEAM_CAPTAINS: Record<string, string[]> = {
     "Namibia": ["Gerhard Erasmus", "JJ Smit"],
     "Oman": ["Jatinder Singh", "Aqib Ilyas"],
     "United Arab Emirates": ["Muhammad Waseem", "Vriitya Arvind"],
-    "Italy": ["Wayne Madsen", "Gareth Berg"]
+    "Italy": ["Wayne Madsen", "Gareth Berg"],
+    "Chennai Super Kings (CSK)": ["Ruturaj Gaikwad"],
+    "Delhi Capitals (DC)": ["Axar Patel"],
+    "Gujarat Titans (GT)": ["Shubman Gill"],
+    "Kolkata Knight Riders (KKR)": ["Ajinkya Rahane"],
+    "Lucknow Super Giants (LSG)": ["Rishabh Pant"],
+    "Mumbai Indians (MI)": ["Hardik Pandya"],
+    "Punjab Kings (PBKS)": ["Shreyas Iyer"],
+    "Rajasthan Royals (RR)": ["Riyan Parag"],
+    "Royal Challengers Bengaluru (RCB)": ["Rajat Patidar"],
+    "Sunrisers Hyderabad (SRH)": ["Ishan Kishan"],
+    "CSK": ["Ruturaj Gaikwad"],
+    "DC": ["Axar Patel"],
+    "GT": ["Shubman Gill"],
+    "KKR": ["Ajinkya Rahane"],
+    "LSG": ["Rishabh Pant"],
+    "MI": ["Hardik Pandya"],
+    "PBKS": ["Shreyas Iyer"],
+    "RR": ["Riyan Parag"],
+    "RCB": ["Rajat Patidar"],
+    "SRH": ["Ishan Kishan"]
 };
 
 const PrasnaForm: React.FC<Props> = ({ onResult, lang }) => {
@@ -179,8 +214,8 @@ const PrasnaForm: React.FC<Props> = ({ onResult, lang }) => {
 
     const handleTeamAChange = (val: string) => {
         setFormData({ ...formData, competition_team_a: val });
-        if (val.length >= 3) {
-            const filtered = COUNTRIES_LIST.filter((c: string) => c.toLowerCase().includes(val.toLowerCase()));
+        if (val.length >= 2) {
+            const filtered = ALL_COMPETITION_TEAMS.filter((c: string) => c.toLowerCase().includes(val.toLowerCase()));
             setTeamASuggestions(filtered);
             setShowTeamASug(true);
         } else {
@@ -190,8 +225,8 @@ const PrasnaForm: React.FC<Props> = ({ onResult, lang }) => {
 
     const handleTeamBChange = (val: string) => {
         setFormData({ ...formData, competition_team_b: val });
-        if (val.length >= 3) {
-            const filtered = COUNTRIES_LIST.filter((c: string) => c.toLowerCase().includes(val.toLowerCase()));
+        if (val.length >= 2) {
+            const filtered = ALL_COMPETITION_TEAMS.filter((c: string) => c.toLowerCase().includes(val.toLowerCase()));
             setTeamBSuggestions(filtered);
             setShowTeamBSug(true);
         } else {

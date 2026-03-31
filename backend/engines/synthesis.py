@@ -65,6 +65,12 @@ class SynthesisEngine:
         "Sun": [5], "Moon": [4], "Mars": [1, 8], "Mercury": [3, 6],
         "Jupiter": [9, 12], "Venus": [2, 7], "Saturn": [10, 11]
     }
+    
+    # Rasi Rays (12 signs)
+    RASI_RAYS = {
+        1: 8, 2: 8, 3: 5, 4: 3, 5: 8, 6: 11,
+        7: 2, 8: 4, 9: 6, 10: 8, 11: 8, 12: 27
+    }
 
 
     def __init__(self, jamakkal_data: Dict[str, Any], query_text: str = "", natal_data: Dict[str, Any] = None):
@@ -106,6 +112,24 @@ class SynthesisEngine:
 
     def _get_house_num(self, rasi: int, start_rasi: int) -> int:
         return (rasi - start_rasi + 12) % 12 + 1
+
+    def _is_combust(self, planet_name: str) -> bool:
+        """Check if a planet is placed too close to the Sun, entering state of Combustion."""
+        if planet_name in ["Sun", "Rahu", "Ketu", "Snake"]:
+            return False
+            
+        sun_deg = self.transits.get("Sun", {}).get("abs_deg")
+        planet_deg = self.transits.get(planet_name, {}).get("abs_deg")
+        
+        if sun_deg is None or planet_deg is None:
+            return False
+            
+        diff = abs(sun_deg - planet_deg)
+        if diff > 180:
+            diff = 360 - diff
+            
+        # Standard combust limit (simplified average for prasna: 8 degrees)
+        return diff <= 8
 
     def _detect_intent(self) -> str:
         if self.jam.get("is_strict_competition_mode"):
@@ -984,9 +1008,12 @@ class SynthesisEngine:
             lord_status = self.transits.get(lord, {}).get("status", "")
             lord_rasi = self.positions.get(f"Jama {lord}", self.positions.get(lord, 1))
             if "Exalted" in lord_status: ray_mult = 3
-            elif "Debilitated" in lord_status: ray_mult = 0
+            elif "Debilitated" in lord_status: ray_mult = 0.5
             elif lord_rasi in self.OWN_SIGNS.get(lord, []): ray_mult = 2
             else: ray_mult = 1
+            
+            if self._is_combust(lord):
+                ray_mult *= 0.5
             
             eff_rays = lord_rays * ray_mult
             # Precision Ray Adjustment for Competition Mode
@@ -1225,14 +1252,18 @@ class SynthesisEngine:
                 effective_rays = base_rays * 3
                 dignity = "exalted 3×"
             elif "Debilitated" in planet_status or self.DEBILITATION_SIGNS.get(planet_name) == planet_rasi:
-                effective_rays = 0
-                dignity = "debilitated 0×"
+                effective_rays = base_rays // 2
+                dignity = "debilitated 0.5×"
             elif planet_rasi in self.OWN_SIGNS.get(planet_name, []):
                 effective_rays = base_rays * 2
                 dignity = "own sign 2×"
             else:
                 effective_rays = base_rays
                 dignity = "normal"
+            
+            if self._is_combust(planet_name):
+                effective_rays = effective_rays // 2
+                dignity += " combust 0.5×"
             
             if effective_rays == 0:
                 continue
