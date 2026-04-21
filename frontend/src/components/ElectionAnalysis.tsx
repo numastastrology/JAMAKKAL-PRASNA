@@ -634,13 +634,39 @@ const ElectionAnalysis: React.FC = () => {
           borderRadius: '20px',
         }}
       >
-        <div className="pdf-section" style={{ padding: '6rem 2.5rem', marginBottom: '2rem', border: '2px solid var(--color-gold)', borderRadius: '20px', background: 'radial-gradient(ellipse at center, rgba(13, 27, 42, 1) 0%, rgba(13, 27, 42, 1) 40%, rgba(194, 151, 49, 0.1) 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div className="pdf-section" style={{ padding: '4.5rem 2.5rem', marginBottom: '2rem', border: '2px solid var(--color-gold)', borderRadius: '20px', background: 'radial-gradient(ellipse at center, rgba(13, 27, 42, 1) 0%, rgba(13, 27, 42, 1) 40%, rgba(194, 151, 49, 0.1) 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
            <h1 style={{ fontSize: '3rem', color: '#fcc419', textAlign: 'center', marginBottom: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1rem' }}>
              <Star size={40} /> Astrological Analysis - Final Audited Report
            </h1>
            <p style={{ textAlign: 'center', color: 'var(--color-text)', fontSize: '1.5rem', marginBottom: '2rem' }}>Comprehensive Astrological Audit - TN 2026 Legislative Assembly Elections</p>
-           <div style={{ padding: '1rem 2rem', border: '1px solid var(--color-gold)', borderRadius: '12px', background: 'rgba(194, 151, 49, 0.1)' }}>
+           <div style={{ padding: '1rem 2rem', border: '1px solid var(--color-gold)', borderRadius: '12px', background: 'rgba(194, 151, 49, 0.1)', marginBottom: '3.5rem' }}>
              <p style={{ textAlign: 'center', color: 'var(--color-gold-light)', fontSize: '1.35rem', fontWeight: 'bold', margin: 0 }}>Astrological Analysis Executed by Rajagopal Kannan</p>
+           </div>
+           
+           <div style={{ width: '100%', maxWidth: '900px', background: 'rgba(0,0,0,0.3)', padding: '2.5rem', borderRadius: '15px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 8px 32px 0 rgba(0,0,0,0.2)' }}>
+              <h3 style={{ color: '#fcc419', fontSize: '1.6rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>
+                <CheckCircle size={24} /> Analytical Methodology & Parameters
+              </h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '2rem' }}>
+                <div>
+                  <h4 style={{ color: '#51cf66', fontSize: '1.4rem', marginBottom: '1.2rem', letterSpacing: '0.5px' }}>Core Frameworks Consulted</h4>
+                  <ul style={{ color: '#F8F9FA', fontSize: '1.25rem', lineHeight: '1.8', paddingLeft: '1.5rem' }}>
+                    <li style={{ marginBottom: '0.8rem' }}><strong>Parashari Astrology:</strong> Foundational chart strength.</li>
+                    <li style={{ marginBottom: '0.8rem' }}><strong>Jamakkal Prasna:</strong> Dynamic outcome probability.</li>
+                    <li style={{ marginBottom: '0.8rem' }}><strong>Kala Purusha Thathwa:</strong> Macro state karmic directives.</li>
+                    <li style={{ marginBottom: '0.8rem' }}><strong>Ashtakavarga:</strong> Mathematical strength of planetary transits.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 style={{ color: '#339af0', fontSize: '1.4rem', marginBottom: '1.2rem', letterSpacing: '0.5px' }}>Key Evaluation Metrics</h4>
+                  <ul style={{ color: '#F8F9FA', fontSize: '1.25rem', lineHeight: '1.8', paddingLeft: '1.5rem' }}>
+                    <li style={{ marginBottom: '0.8rem' }}><strong>10th House:</strong> Executive Power & Governing Karma.</li>
+                    <li style={{ marginBottom: '0.8rem' }}><strong>Nodal Axis (Rahu/Ketu):</strong> Volatility and disruptive shifts.</li>
+                    <li style={{ marginBottom: '0.8rem' }}><strong>Dasa/Bhukti Alignment:</strong> Resonance with election dates.</li>
+                    <li style={{ marginBottom: '0.8rem' }}><strong>Gochara (Transits):</strong> Influence on April 23 & May 4.</li>
+                  </ul>
+                </div>
+              </div>
            </div>
         </div>
 
@@ -653,9 +679,16 @@ const ElectionAnalysis: React.FC = () => {
                 <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '2.5rem', color: candidate.color, marginBottom: '0.5rem' }}>
                   {candidate.icon} {candidate.name}
                 </h2>
-                <div style={{ color: 'var(--color-text-dim)', fontSize: '1.1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}><Info size={16}/> <strong>DOB/Location:</strong> {candidate.dobInfo}</span>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}><Info size={16}/> <strong>Astrological Metrics:</strong> <span style={{ color: 'var(--color-gold-light)', fontWeight: 600 }}>{candidate.astrology}</span></span>
+                <div style={{ color: '#F8F9FA', fontSize: '1.35rem', display: 'grid', gridTemplateColumns: 'minmax(180px, auto) 1fr', gap: '1rem', marginTop: '1rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                    <Info size={20} style={{ marginTop: '0.2rem' }}/> <strong style={{ color: '#adb5bd' }}>DOB/Location:</strong>
+                  </div>
+                  <div style={{ lineHeight: '1.6' }}>{candidate.dobInfo}</div>
+                  
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                    <Info size={20} style={{ marginTop: '0.2rem' }}/> <strong style={{ color: '#adb5bd' }}>Core Metrics:</strong>
+                  </div>
+                  <div style={{ color: '#fcc419', fontWeight: 600, lineHeight: '1.6' }}>{candidate.astrology}</div>
                 </div>
               </div>
               <div style={{ width: '280px' }}>
@@ -664,77 +697,85 @@ const ElectionAnalysis: React.FC = () => {
             </div>
             
             <div style={{ marginBottom: '1rem', background: 'rgba(0,0,0,0.3)', padding: '2rem', borderRadius: '12px', borderLeft: `5px solid ${candidate.color}`, boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
-              <h3 style={{ fontSize: '1.5rem', color: 'var(--color-text)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <ArrowRight size={20} color={candidate.color} /> Ultimate Astrological Verdict
+              <h3 style={{ fontSize: '1.6rem', color: 'var(--color-text)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <ArrowRight size={22} color={candidate.color} /> Ultimate Astrological Verdict
               </h3>
-              <p style={{ color: 'var(--color-text)', lineHeight: '1.9', fontSize: '1.25rem', fontWeight: 500 }}>
-                {candidate.verdict}
-              </p>
+              <ul style={{ paddingLeft: '2rem', color: '#F8F9FA', lineHeight: '2.0', fontSize: '1.6rem', fontWeight: 500, letterSpacing: '0.2px' }}>
+                {candidate.verdict.split('. ').filter(Boolean).map((sentence, idx) => (
+                   <li key={idx} style={{ marginBottom: '1.5rem' }}>{sentence.trim()}{sentence.endsWith('.') ? '' : '.'}</li>
+                ))}
+              </ul>
             </div>
             </div>
 
-            <div className="pdf-section glass-panel" style={{ padding: '2rem', marginBottom: '1.5rem', border: '1px solid rgba(255,255,255,0.05)', background: 'var(--color-navy)' }}>
-                <h3 style={{ color: '#fcc419', marginBottom: '1.5rem', fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.8rem' }}>
+            <div className="pdf-section glass-panel" style={{ padding: '2.5rem', marginBottom: '1.5rem', border: '1px solid rgba(194,151,49,0.2)', background: 'var(--color-navy)' }}>
+                <h3 style={{ color: '#fcc419', marginBottom: '2rem', fontSize: '1.6rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.8rem' }}>
                   Positive Astrological Drivers
                 </h3>
-                <ul style={{ paddingLeft: '1.5rem', color: 'var(--color-text)', lineHeight: '2.0', fontSize: '1.15rem' }}>
+                <ul style={{ paddingLeft: '1.8rem', color: '#F8F9FA', lineHeight: '1.7', fontSize: '1.5rem', fontWeight: 500, letterSpacing: '0.2px' }}>
                   {candidate.positives.map((point, idx) => (
-                    <li key={idx} style={{ marginBottom: '1.2rem' }}>{point}</li>
+                    <li key={idx} style={{ marginBottom: '2.2rem' }}>{point}</li>
                   ))}
                 </ul>
             </div>
-            <div className="pdf-section glass-panel" style={{ padding: '2rem', border: '1px solid rgba(255,255,255,0.05)', background: 'var(--color-navy)' }}>
-                <h3 style={{ color: '#ff6b6b', marginBottom: '1.5rem', fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.8rem' }}>
+            <div className="pdf-section glass-panel" style={{ padding: '2.5rem', border: '1px solid rgba(255,107,107,0.2)', background: 'var(--color-navy)' }}>
+                <h3 style={{ color: '#ff6b6b', marginBottom: '2rem', fontSize: '1.6rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.8rem' }}>
                   Negative Vulnerabilities
                 </h3>
-                <ul style={{ paddingLeft: '1.5rem', color: 'var(--color-text)', lineHeight: '2.0', fontSize: '1.15rem' }}>
+                <ul style={{ paddingLeft: '1.8rem', color: '#F8F9FA', lineHeight: '1.7', fontSize: '1.5rem', fontWeight: 500, letterSpacing: '0.2px' }}>
                   {candidate.negatives.map((point, idx) => (
-                    <li key={idx} style={{ marginBottom: '1.2rem' }}>{point}</li>
+                    <li key={idx} style={{ marginBottom: '2.2rem' }}>{point}</li>
                   ))}
                 </ul>
             </div>
           </div>
         ))}
 
-        <div className="pdf-section glass-panel" data-newpage="true" style={{ padding: '3.5rem', marginTop: '2rem', marginBottom: '2rem', borderTop: '6px solid var(--color-gold)', background: 'var(--color-navy)' }}>
-          <h3 style={{ fontSize: '1.9rem', color: '#fcc419', marginBottom: '1.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem' }}>
+        <div className="pdf-section glass-panel" data-newpage="true" style={{ padding: '3.5rem 3.5rem 2rem 3.5rem', marginTop: '2rem', borderTop: '6px solid var(--color-gold)', borderRadius: '20px 20px 0 0', background: 'var(--color-navy)' }}>
+          <h3 style={{ fontSize: '2.1rem', color: '#fcc419', marginBottom: '1.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem' }}>
             <Crown /> Final Conclusion & Astrological Verdict
           </h3>
-          <p style={{ lineHeight: '1.9', marginBottom: '2.5rem', color: 'var(--color-text)', fontSize: '1.2rem' }}>
+          <p style={{ lineHeight: '1.8', marginBottom: '2.5rem', color: '#F8F9FA', fontSize: '1.45rem', fontWeight: 500, letterSpacing: '0.2px' }}>
             The inclusion of specific date transits and the nodal axis (Rahu/Ketu) reveals that the 2026 Tamil Nadu Election is fundamentally an anti-establishment, chaotic disruption, mediated entirely by heavily fragmented voting.
           </p>
           
-          <h4 style={{ fontSize: '1.4rem', color: '#fcc419', marginBottom: '1rem' }}>The Verdict on Both Dates</h4>
-          <p style={{ lineHeight: '1.9', marginBottom: '2.5rem', color: 'var(--color-text)', fontSize: '1.15rem' }}>
+          <h4 style={{ fontSize: '1.7rem', color: '#fcc419', marginBottom: '1rem' }}>The Verdict on Both Dates</h4>
+          <p style={{ lineHeight: '1.8', marginBottom: '2.5rem', color: '#F8F9FA', fontSize: '1.4rem', fontWeight: 500 }}>
             The Voting Date (April 23) leans phenomenally towards Vijay (TVK) and EPS (AIADMK), creating a massive early surge and an emotionally charged atmosphere. Conversely, Stalin and Seeman face massive internal and logistical friction on this day. The Counting Date (May 4) brings heavy panic and shockers for the ruling DMK, but an eventual begrudging hold on power. It triggers massive, history-making celebrations for TVK, and huge, validating comebacks for AIADMK.
           </p>
 
-          <h4 style={{ fontSize: '1.4rem', color: '#fcc419', marginBottom: '1rem', marginTop: '2rem' }}>Astrological Seat Projection (Total: 234 Seats - Magic Number: 118)</h4>
-          <p style={{ lineHeight: '1.9', marginBottom: '3rem', color: 'var(--color-text)', fontSize: '1.15rem' }}>
+          <h4 style={{ fontSize: '1.7rem', color: '#fcc419', marginBottom: '1rem', marginTop: '2.5rem' }}>Astrological Seat Projection (Total: 234 Seats - Magic Number: 118)</h4>
+          <p style={{ lineHeight: '1.8', marginBottom: '0', color: '#F8F9FA', fontSize: '1.4rem', fontWeight: 500 }}>
             The sheer disruption caused by Rahu in Aquarius and TVK's Janma Rasi Voting Day Transit ensures that no party will see a clean, unquestioned sweep. The vote is brutally fractured.
           </p>
+        </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-            <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #ff6b6b' }}>
-              <strong style={{ fontSize: '1.3rem', color: '#ff6b6b' }}>DMK Alliance (120 - 130 Seats):</strong>
-              <p style={{ marginTop: '0.75rem', fontSize: '1.15rem', lineHeight: '1.8', color: 'var(--color-text)' }}><strong>Verdict:</strong> Retains power, but heavily battered. Ketu on Stalin's Moon and the 4th house Counting Day Moon mean they win the required seats by razor-thin margins. It will be the most stressful victory of Stalin's career, heavily relying on the alliance's combined strength rather than an absolute DMK monopoly.</p>
+        <div className="pdf-section glass-panel" style={{ padding: '0 3.5rem', borderRadius: '0', background: 'var(--color-navy)' }}>
+            <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #ff6b6b', marginBottom: '2rem', marginTop: '2rem' }}>
+              <strong style={{ fontSize: '1.4rem', color: '#ff6b6b' }}>DMK Alliance (120 - 130 Seats):</strong>
+              <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.8', color: '#F8F9FA' }}><strong>Verdict:</strong> Retains power, but heavily battered. Ketu on Stalin's Moon and the 4th house Counting Day Moon mean they win the required seats by razor-thin margins. It will be the most stressful victory of Stalin's career, heavily relying on the alliance's combined strength rather than an absolute DMK monopoly.</p>
             </div>
+        </div>
 
-            <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #51cf66' }}>
-              <strong style={{ fontSize: '1.3rem', color: '#51cf66' }}>AIADMK Front (80 - 90 Seats):</strong>
-              <p style={{ marginTop: '0.75rem', fontSize: '1.15rem', lineHeight: '1.8', color: 'var(--color-text)' }}><strong>Verdict:</strong> A ferocious comeback driven by EPS's 10th House Karma and Neecha Bhanga on counting day. They successfully absorb the anti-incumbency anger but fall short of absolute power largely because TVK cannibalizes their required youth swing votes. They become an overwhelmingly powerful opposition.</p>
+        <div className="pdf-section glass-panel" style={{ padding: '0 3.5rem', borderRadius: '0', background: 'var(--color-navy)' }}>
+            <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #51cf66', marginBottom: '2rem' }}>
+              <strong style={{ fontSize: '1.4rem', color: '#51cf66' }}>AIADMK Front (80 - 90 Seats):</strong>
+              <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.8', color: '#F8F9FA' }}><strong>Verdict:</strong> A ferocious comeback driven by EPS's 10th House Karma and Neecha Bhanga on counting day. They successfully absorb the anti-incumbency anger but fall short of absolute power largely because TVK cannibalizes their required youth swing votes. They become an overwhelmingly powerful opposition.</p>
             </div>
+        </div>
 
-            <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #339af0' }}>
-              <strong style={{ fontSize: '1.3rem', color: '#339af0' }}>TVK / Vijay (20 - 25 Seats):</strong>
-              <p style={{ marginTop: '0.75rem', fontSize: '1.15rem', lineHeight: '1.8', color: 'var(--color-text)' }}><strong>Verdict:</strong> Astrological History. The Janma Rasi transit on Voting Day ensures a legendary debut. While 234 solo contesting prevents a majority, securing 20+ seats on a debut marks TVK as the ultimate kingmaker and definitively announces Vijay as the inevitable future of Tamil Nadu politics.</p>
+        <div className="pdf-section glass-panel" style={{ padding: '0 3.5rem', borderRadius: '0', background: 'var(--color-navy)' }}>
+            <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #339af0', marginBottom: '2rem' }}>
+              <strong style={{ fontSize: '1.4rem', color: '#339af0' }}>TVK / Vijay (20 - 25 Seats):</strong>
+              <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.8', color: '#F8F9FA' }}><strong>Verdict:</strong> Astrological History. The Janma Rasi transit on Voting Day ensures a legendary debut. While 234 solo contesting prevents a majority, securing 20+ seats on a debut marks TVK as the ultimate kingmaker and definitively announces Vijay as the inevitable future of Tamil Nadu politics.</p>
             </div>
+        </div>
 
+        <div className="pdf-section glass-panel" style={{ padding: '0 3.5rem 3.5rem 3.5rem', marginBottom: '2rem', borderRadius: '0 0 20px 20px', background: 'var(--color-navy)' }}>
             <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #fcc419' }}>
-              <strong style={{ fontSize: '1.3rem', color: '#fcc419' }}>NTK / Seeman (0 - 2 Seats but ~10-12% Vote Share):</strong>
-              <p style={{ marginTop: '0.75rem', fontSize: '1.15rem', lineHeight: '1.8', color: 'var(--color-text)' }}><strong>Verdict:</strong> The tragic victim of the First-Past-The-Post (FPTP) voting system and Rahu/Ketu rigidness. Despite immense crowds and Jupiter's massive vote share expansion, Ketu's isolation prevents tactical alliances, and TVK steals the limelight. They remain an immense ideological force but lack legislative footprint.</p>
+              <strong style={{ fontSize: '1.4rem', color: '#fcc419' }}>NTK / Seeman (0 - 2 Seats but ~10-12% Vote Share):</strong>
+              <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.8', color: '#F8F9FA' }}><strong>Verdict:</strong> The tragic victim of the First-Past-The-Post (FPTP) voting system and Rahu/Ketu rigidness. Despite immense crowds and Jupiter's massive vote share expansion, Ketu's isolation prevents tactical alliances, and TVK steals the limelight. They remain an immense ideological force but lack legislative footprint.</p>
             </div>
-          </div>
         </div>
 
         <div className="pdf-section glass-panel" style={{ marginTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)', padding: '3rem 2rem', textAlign: 'center', background: 'var(--color-navy)' }}>
