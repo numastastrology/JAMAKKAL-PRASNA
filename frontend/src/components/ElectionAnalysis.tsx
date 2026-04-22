@@ -28,7 +28,7 @@ const initialCandidatesData: CandidateData[] = [
     color: '#ff6b6b',
     dobInfo: '01.03.1953 - 19:05:00, Chennai',
     astrology: 'Lagna: Leo | Rasi: Leo | Star: Pooram-4 | Dasa: Saturn - Bhukti: Rahu - Antaram: Mercury',
-    verdict: 'The Dasa-Bhukti alignment strongly points to a loss of the Chief Minister position but a transition into a highly powerful Leader of the Opposition. Saturn Dasa and Rahu Bhukti are in a 4/10 axis leading to resting rather than ruling. The ruling state (Leo Rasi) going through Ashtama Shani and transiting Ketu guarantees a change of leadership.',
+    verdict: 'The Dasa-Bhukti alignment strongly points to a loss of the Chief Minister position but a transition into a highly powerful Leader of the Opposition. Saturn Dasa and Rahu Bhukti are in a 4/10 axis leading to resting rather than ruling. The ruling state (Leo Rasi) going through Ashtama Shani and transiting Ketu over the Janma Moon guarantees a change of leadership and a period of strategic detachment (Janma Ketu).',
     chartData: [
       'குரு\nசுக்#', // Aries 0
       '',             // Taurus 1
@@ -84,7 +84,7 @@ const initialCandidatesData: CandidateData[] = [
     color: '#51cf66',
     dobInfo: '20.03.1954 - 10:33 AM, Edappadi',
     astrology: 'Lagna: Taurus | Rasi: Virgo | Star: Hastham-1 | Dasa: Mercury - Bhukti: Venus - Antaram: Rahu',
-    verdict: 'A ferocious, victorious comeback powered by phenomenal Dasa dynamics. Transits and Navamsa alignments display supreme Raja Yogas triggering an Oath of Office. Complete astrological synchronization with the ADMK party chart confirms he will recapture and hold the Chief Minister post with overwhelming authority.',
+    verdict: 'A ferocious, victorious comeback powered by phenomenal Dasa dynamics and favorable transits. Transiting Saturn in the 11th House (Labha Shani) and transiting Jupiter in the 1st House create a "Kingdom-Winning" yoga. Navamsa alignments display supreme Raja Yogas triggering an Oath of Office. Complete astrological synchronization with the ADMK party chart confirms he will recapture and hold the Chief Minister post with overwhelming authority.',
     chartData: [
       '',          // Aries 0
       'ல',         // Taurus 1
@@ -346,6 +346,7 @@ const ElectionAnalysis: React.FC = () => {
   const [selectedCandidateId, setSelectedCandidateId] = useState<CandidateId>('stalin');
   const [generatingPDF, setGeneratingPDF] = useState(false);
   const reportRef = useRef<HTMLDivElement>(null);
+  const [selectedState, setSelectedState] = useState<string>('');
 
   const displayedCandidates = candidates.slice(0, displayLimit);
   const activeCandidate = displayedCandidates.find(c => c.id === selectedCandidateId) || displayedCandidates[0];
@@ -372,15 +373,6 @@ const ElectionAnalysis: React.FC = () => {
     
     setTimeout(async () => {
       try {
-        const canvas = await html2canvas(reportRef.current!, {
-          scale: 2,
-          backgroundColor: '#0D1B2A',
-          logging: false,
-          useCORS: true,
-          windowWidth: reportRef.current!.scrollWidth,
-          windowHeight: reportRef.current!.scrollHeight
-        });
-        
         const pdf = new jsPDF({
           orientation: 'portrait',
           unit: 'mm',
@@ -409,22 +401,29 @@ const ElectionAnalysis: React.FC = () => {
             
             const imgData = canvas.toDataURL('image/png');
             const pdfImgHeight = (canvas.height * innerPdfWidth) / canvas.width;
-            const isNewPageRequested = section.getAttribute('data-newpage') === "true";
             
-            if (isNewPageRequested && i > 0 && currentY > 20) {
+            // Skip zero-height or invalid sections
+            if (pdfImgHeight <= 0) continue;
+
+            const isNewPageRequested = section.getAttribute('data-newpage') === "true";
+            const isTall = pdfImgHeight > (pageHeight - 20);
+            const fitsOnCurrentPage = (currentY + pdfImgHeight) < (pageHeight - 15);
+            
+            // Unified Pagination Logic
+            if (isNewPageRequested && i > 0 && currentY > 25) {
               pdf.addPage();
               pdf.setFillColor(13, 27, 42);
               pdf.rect(0, 0, pdfWidth, pageHeight, 'F');
               currentY = 15;
-            } else if (currentY + pdfImgHeight > pageHeight - 15 && currentY > 20) {
+            } else if (!isTall && !fitsOnCurrentPage && currentY > 25) {
               pdf.addPage();
               pdf.setFillColor(13, 27, 42);
               pdf.rect(0, 0, pdfWidth, pageHeight, 'F');
               currentY = 15;
             }
             
-            if (pdfImgHeight > pageHeight - 20) {
-              // Extremely long section fallback (rare)
+            if (isTall) {
+              // Multi-page overflow logic
               let heightLeft = pdfImgHeight;
               let position = currentY;
 
@@ -432,14 +431,19 @@ const ElectionAnalysis: React.FC = () => {
               heightLeft -= (pageHeight - position);
 
               while (heightLeft > 0) {
-                position = heightLeft - pdfImgHeight;
                 pdf.addPage();
                 pdf.setFillColor(13, 27, 42);
                 pdf.rect(0, 0, pdfWidth, pageHeight, 'F');
+                position = heightLeft - pdfImgHeight;
                 pdf.addImage(imgData, 'PNG', marginX, position, innerPdfWidth, pdfImgHeight);
+                
+                if (heightLeft < pageHeight) {
+                  currentY = heightLeft + 15; 
+                } else {
+                  currentY = pageHeight;
+                }
                 heightLeft -= pageHeight;
               }
-              currentY = pageHeight;
             } else {
               pdf.addImage(imgData, 'PNG', marginX, currentY, innerPdfWidth, pdfImgHeight);
               currentY += pdfImgHeight + 6;
@@ -480,7 +484,12 @@ const ElectionAnalysis: React.FC = () => {
       }
     }, 100);
   };
-  const [selectedState, setSelectedState] = useState<string>('');
+
+  const chunkArray = <T,>(arr: T[], size: number): T[][] => {
+    return Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+      arr.slice(i * size, i * size + size)
+    );
+  };
 
   if (viewState === 'validation') {
     return (
@@ -671,110 +680,168 @@ const ElectionAnalysis: React.FC = () => {
         </div>
 
         {displayedCandidates.map(candidate => (
-          <div key={candidate.id} style={{ marginBottom: '4rem' }}>
-            <div className="pdf-section glass-panel" data-newpage="true" style={{ padding: '2.5rem', marginBottom: '1.5rem', border: `1px solid ${candidate.color}50`, boxShadow: `0 8px 32px 0 ${candidate.color}15`, background: 'var(--color-navy)' }}>
-            
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem' }}>
-              <div style={{ flex: 1 }}>
-                <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '2.5rem', color: candidate.color, marginBottom: '0.5rem' }}>
-                  {candidate.icon} {candidate.name}
-                </h2>
-                <div style={{ color: '#F8F9FA', fontSize: '1.35rem', display: 'grid', gridTemplateColumns: 'minmax(180px, auto) 1fr', gap: '1rem', marginTop: '1rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                    <Info size={20} style={{ marginTop: '0.2rem' }}/> <strong style={{ color: '#adb5bd' }}>DOB/Location:</strong>
+          <div key={candidate.id} style={{ marginBottom: '2rem' }}>
+            {/* Candidate Header Section */}
+            <div className="pdf-section glass-panel" data-newpage="true" style={{ padding: '2.5rem', marginBottom: '1rem', border: `1px solid ${candidate.color}50`, background: 'var(--color-navy)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem' }}>
+                <div style={{ flex: 1 }}>
+                  <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '2.5rem', color: candidate.color, marginBottom: '0.5rem' }}>
+                    {candidate.icon} {candidate.name}
+                  </h2>
+                  <div style={{ color: '#F8F9FA', fontSize: '1.35rem', display: 'grid', gridTemplateColumns: 'minmax(180px, auto) 1fr', gap: '1rem', marginTop: '1rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                      <Info size={20} style={{ marginTop: '0.2rem' }}/> <strong style={{ color: '#adb5bd' }}>DOB/Location:</strong>
+                    </div>
+                    <div style={{ lineHeight: '1.6' }}>{candidate.dobInfo}</div>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                      <Info size={20} style={{ marginTop: '0.2rem' }}/> <strong style={{ color: '#adb5bd' }}>Core Metrics:</strong>
+                    </div>
+                    <div style={{ color: '#fcc419', fontWeight: 600, lineHeight: '1.6' }}>{candidate.astrology}</div>
                   </div>
-                  <div style={{ lineHeight: '1.6' }}>{candidate.dobInfo}</div>
-                  
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                    <Info size={20} style={{ marginTop: '0.2rem' }}/> <strong style={{ color: '#adb5bd' }}>Core Metrics:</strong>
-                  </div>
-                  <div style={{ color: '#fcc419', fontWeight: 600, lineHeight: '1.6' }}>{candidate.astrology}</div>
+                </div>
+                <div style={{ width: '280px' }}>
+                    <SouthIndianChart data={candidate.chartData} title="V1 Rasi Chart" color={candidate.color} cellColors={candidate.chartColors} />
                 </div>
               </div>
-              <div style={{ width: '280px' }}>
-                  <SouthIndianChart data={candidate.chartData} title="V1 Rasi Chart" color={candidate.color} cellColors={candidate.chartColors} />
+              
+              <div style={{ background: 'rgba(0,0,0,0.3)', padding: '2rem', borderRadius: '12px', borderLeft: `5px solid ${candidate.color}` }}>
+                <h3 style={{ fontSize: '1.6rem', color: 'var(--color-text)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <ArrowRight size={22} color={candidate.color} /> Ultimate Astrological Verdict
+                </h3>
+                <ul style={{ paddingLeft: '2rem', color: '#F8F9FA', lineHeight: '2.0', fontSize: '1.6rem', fontWeight: 500 }}>
+                  {candidate.verdict.split('. ').filter(Boolean).map((sentence, idx) => (
+                     <li key={idx} style={{ marginBottom: '1.5rem' }}>{sentence.trim()}{sentence.endsWith('.') ? '' : '.'}</li>
+                  ))}
+                </ul>
               </div>
             </div>
-            
-            <div style={{ marginBottom: '1rem', background: 'rgba(0,0,0,0.3)', padding: '2rem', borderRadius: '12px', borderLeft: `5px solid ${candidate.color}`, boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
-              <h3 style={{ fontSize: '1.6rem', color: 'var(--color-text)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <ArrowRight size={22} color={candidate.color} /> Ultimate Astrological Verdict
-              </h3>
-              <ul style={{ paddingLeft: '2rem', color: '#F8F9FA', lineHeight: '2.0', fontSize: '1.6rem', fontWeight: 500, letterSpacing: '0.2px' }}>
-                {candidate.verdict.split('. ').filter(Boolean).map((sentence, idx) => (
-                   <li key={idx} style={{ marginBottom: '1.5rem' }}>{sentence.trim()}{sentence.endsWith('.') ? '' : '.'}</li>
-                ))}
-              </ul>
-            </div>
-            </div>
 
-            <div className="pdf-section glass-panel" style={{ padding: '2.5rem', marginBottom: '1.5rem', border: '1px solid rgba(194,151,49,0.2)', background: 'var(--color-navy)' }}>
-                <h3 style={{ color: '#fcc419', marginBottom: '2rem', fontSize: '1.6rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.8rem' }}>
-                  Positive Astrological Drivers
-                </h3>
-                <ul style={{ paddingLeft: '1.8rem', color: '#F8F9FA', lineHeight: '1.7', fontSize: '1.5rem', fontWeight: 500, letterSpacing: '0.2px' }}>
-                  {candidate.positives.map((point, idx) => (
-                    <li key={idx} style={{ marginBottom: '2.2rem' }}>{point}</li>
+            {/* Chunked Positives */}
+            {chunkArray(candidate.positives, 5).map((chunk, cIdx) => (
+              <div key={`pos-${cIdx}`} className="pdf-section glass-panel" style={{ padding: '2.5rem', marginBottom: '1rem', border: '1px solid rgba(81, 207, 102, 0.2)', background: 'var(--color-navy)' }}>
+                {cIdx === 0 && (
+                  <h3 style={{ color: '#51cf66', marginBottom: '1.5rem', fontSize: '1.6rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.8rem' }}>
+                    Positive Astrological Drivers
+                  </h3>
+                )}
+                <ul style={{ paddingLeft: '1.8rem', color: '#F8F9FA', lineHeight: '1.7', fontSize: '1.5rem', fontWeight: 500 }}>
+                  {chunk.map((point, idx) => (
+                    <li key={idx} style={{ marginBottom: '1.8rem' }}>{point}</li>
                   ))}
                 </ul>
-            </div>
-            <div className="pdf-section glass-panel" style={{ padding: '2.5rem', border: '1px solid rgba(255,107,107,0.2)', background: 'var(--color-navy)' }}>
-                <h3 style={{ color: '#ff6b6b', marginBottom: '2rem', fontSize: '1.6rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.8rem' }}>
-                  Negative Vulnerabilities
-                </h3>
-                <ul style={{ paddingLeft: '1.8rem', color: '#F8F9FA', lineHeight: '1.7', fontSize: '1.5rem', fontWeight: 500, letterSpacing: '0.2px' }}>
-                  {candidate.negatives.map((point, idx) => (
-                    <li key={idx} style={{ marginBottom: '2.2rem' }}>{point}</li>
+              </div>
+            ))}
+
+            {/* Chunked Negatives */}
+            {chunkArray(candidate.negatives, 5).map((chunk, cIdx) => (
+              <div key={`neg-${cIdx}`} className="pdf-section glass-panel" style={{ padding: '2.5rem', marginBottom: '1rem', border: '1px solid rgba(255, 107, 107, 0.2)', background: 'var(--color-navy)' }}>
+                {cIdx === 0 && (
+                  <h3 style={{ color: '#ff6b6b', marginBottom: '1.5rem', fontSize: '1.6rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.8rem' }}>
+                    Negative Vulnerabilities
+                  </h3>
+                )}
+                <ul style={{ paddingLeft: '1.8rem', color: '#F8F9FA', lineHeight: '1.7', fontSize: '1.5rem', fontWeight: 500 }}>
+                  {chunk.map((point, idx) => (
+                    <li key={idx} style={{ marginBottom: '1.8rem' }}>{point}</li>
                   ))}
                 </ul>
-            </div>
+              </div>
+            ))}
           </div>
         ))}
 
-        <div className="pdf-section glass-panel" data-newpage="true" style={{ padding: '3.5rem 3.5rem 2rem 3.5rem', marginTop: '2rem', borderTop: '6px solid var(--color-gold)', borderRadius: '20px 20px 0 0', background: 'var(--color-navy)' }}>
-          <h3 style={{ fontSize: '2.1rem', color: '#fcc419', marginBottom: '1.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem' }}>
+        {/* MATH SYNTHESIS FRAGMENT 1: DMK */}
+        <div className="pdf-section glass-panel" data-newpage="true" style={{ padding: '3.5rem', marginBottom: '1rem', border: '1px solid rgba(194,151,49,0.3)', background: 'var(--color-navy)' }}>
+          <h3 style={{ fontSize: '2.1rem', color: '#fcc419', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem' }}>
+            <TrendingUp /> Mathematical Synthesis: DMK Friction Logic
+          </h3>
+          <div style={{ background: 'rgba(255, 107, 107, 0.05)', padding: '2.5rem', borderRadius: '15px', border: '1px solid rgba(255, 107, 107, 0.2)' }}>
+             <h4 style={{ color: '#ff6b6b', fontSize: '1.6rem', marginBottom: '1.2rem' }}>Why -25% Friction is given for DMK</h4>
+             <p style={{ color: '#F8F9FA', fontSize: '1.25rem', marginBottom: '1.5rem', fontStyle: 'italic' }}>
+               The -25% is a cumulative "Nodal Squeeze" that forces the party from a potential sweep into a period of withdrawal.
+             </p>
+             <ul style={{ color: '#F8F9FA', fontSize: '1.25rem', lineHeight: '2', paddingLeft: '1.5rem' }}>
+                <li style={{ marginBottom: '1.2rem' }}><strong>The Janma Ketu Impact (-10%):</strong> Transiting Ketu is positioned exactly on Stalin’s natal Moon (Janma Rasi). Astrologically, this creates a <strong>Frequency Disconnect</strong> between the leader and the public pulse.</li>
+                <li style={{ marginBottom: '1.2rem' }}><strong>The Ashtama Shani Factor (-10%):</strong> Saturn in the 8th house for Leo Rasi indicates "Sudden Disruption" and "Administrative Shocks," leading to a 10% loss in structural efficiency.</li>
+                <li style={{ marginBottom: '1.2rem' }}><strong>The 4th House Influence (-5%):</strong> The planetary alignment on May 4 focuses energy on "Resting" (Sukha) rather than "Ruling" (Karma).</li>
+             </ul>
+             <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px dashed rgba(255, 107, 107, 0.3)', fontWeight: 'bold', color: '#ff6b6b', fontSize: '1.3rem' }}>
+               Total Friction: -25% | Final Range: 95 - 105 Seats.
+             </div>
+          </div>
+        </div>
+
+        {/* MATH SYNTHESIS FRAGMENT 2: AIADMK */}
+        <div className="pdf-section glass-panel" style={{ padding: '3.5rem', marginBottom: '1rem', border: '1px solid rgba(194,151,49,0.3)', background: 'var(--color-navy)' }}>
+          <h3 style={{ fontSize: '2.1rem', color: '#fcc419', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem' }}>
+            <TrendingUp /> Mathematical Synthesis: AIADMK Momentum Logic
+          </h3>
+          <div style={{ background: 'rgba(81, 207, 102, 0.05)', padding: '2.5rem', borderRadius: '15px', border: '1px solid rgba(81, 207, 102, 0.2)' }}>
+             <h4 style={{ color: '#51cf66', fontSize: '1.6rem', marginBottom: '1.2rem' }}>Why +30% Momentum is given for AIADMK</h4>
+             <p style={{ color: '#F8F9FA', fontSize: '1.25rem', marginBottom: '1.5rem', fontStyle: 'italic' }}>
+               The +30% is a "Triple-Engine Yoga" that fuels a late-stage surge across rural belts.
+             </p>
+             <ul style={{ color: '#F8F9FA', fontSize: '1.25rem', lineHeight: '2', paddingLeft: '1.5rem' }}>
+                <li style={{ marginBottom: '1.2rem' }}><strong>The Labha Shani Engine (+15%):</strong> Saturn transiting the 11th House (Pisces) is the **Yuddha Bhaga** multiplier, converting narrow-loss seats into narrow-win seats.</li>
+                <li style={{ marginBottom: '1.2rem' }}><strong>The Janma Guru (Jupiter) Aura (+10%):</strong> Transiting Jupiter on Lagna creates a "Protective Shield" and attracts floating voters.</li>
+                <li style={{ marginBottom: '1.2rem' }}><strong>The Neecha Bhanga Multiplier (+5%):</strong> Planetary cancellation of debilitation triggers a "Last-Minute Surge" in the final 5 rounds of counting.</li>
+             </ul>
+             <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px dashed rgba(81, 207, 102, 0.3)', fontWeight: 'bold', color: '#51cf66', fontSize: '1.3rem' }}>
+               Total Momentum: +30% | Final Range: 118 - 125 Seats.
+             </div>
+          </div>
+        </div>
+
+        {/* FINAL VERDICT ATOMIC SECTIONS */}
+        <div className="pdf-section glass-panel" data-newpage="true" style={{ padding: '3.5rem', marginBottom: '1rem', borderTop: '6px solid var(--color-gold)', background: 'var(--color-navy)' }}>
+          <h3 style={{ fontSize: '2.1rem', color: '#fcc419', marginBottom: '1.8rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem' }}>
             <Crown /> Final Conclusion & Astrological Verdict
           </h3>
-          <p style={{ lineHeight: '1.8', marginBottom: '2.5rem', color: '#F8F9FA', fontSize: '1.45rem', fontWeight: 500, letterSpacing: '0.2px' }}>
-            The inclusion of specific date transits and the nodal axis (Rahu/Ketu) reveals that the 2026 Tamil Nadu Election is fundamentally an anti-establishment, chaotic disruption, mediated entirely by heavily fragmented voting.
+          <p style={{ lineHeight: '1.8', color: '#F8F9FA', fontSize: '1.45rem', fontWeight: 500 }}>
+            The 2026 Tamil Nadu Election is fundamentally an anti-establishment, chaotic disruption, mediated by heavily fragmented voting.
           </p>
-          
+        </div>
+
+        <div className="pdf-section glass-panel" style={{ padding: '2.5rem 3.5rem', marginBottom: '1rem', background: 'var(--color-navy)' }}>
           <h4 style={{ fontSize: '1.7rem', color: '#fcc419', marginBottom: '1rem' }}>The Verdict on Both Dates</h4>
-          <p style={{ lineHeight: '1.8', marginBottom: '2.5rem', color: '#F8F9FA', fontSize: '1.4rem', fontWeight: 500 }}>
-            The Voting Date (April 23) leans phenomenally towards Vijay (TVK) and EPS (AIADMK), creating a massive early surge and an emotionally charged atmosphere. Conversely, Stalin and Seeman face massive internal and logistical friction on this day. The Counting Date (May 4) brings heavy panic and shockers for the ruling DMK, but an eventual begrudging hold on power. It triggers massive, history-making celebrations for TVK, and huge, validating comebacks for AIADMK.
-          </p>
-
-          <h4 style={{ fontSize: '1.7rem', color: '#fcc419', marginBottom: '1rem', marginTop: '2.5rem' }}>Astrological Seat Projection (Total: 234 Seats - Magic Number: 118)</h4>
-          <p style={{ lineHeight: '1.8', marginBottom: '0', color: '#F8F9FA', fontSize: '1.4rem', fontWeight: 500 }}>
-            The sheer disruption caused by Rahu in Aquarius and TVK's Janma Rasi Voting Day Transit ensures that no party will see a clean, unquestioned sweep. The vote is brutally fractured.
+          <p style={{ lineHeight: '1.8', color: '#F8F9FA', fontSize: '1.4rem', fontWeight: 500 }}>
+            April 23 favors TVK and AIADMK (anti-establishment wave). May 4 brings "Labha Shani" results for EPS, triggering an Oath of Office, while the Ketu-Janma influence forces the DMK into strategic withdrawal as the opposition.
           </p>
         </div>
 
-        <div className="pdf-section glass-panel" style={{ padding: '0 3.5rem', borderRadius: '0', background: 'var(--color-navy)' }}>
-            <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #ff6b6b', marginBottom: '2rem', marginTop: '2rem' }}>
-              <strong style={{ fontSize: '1.4rem', color: '#ff6b6b' }}>DMK Alliance (120 - 130 Seats):</strong>
-              <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.8', color: '#F8F9FA' }}><strong>Verdict:</strong> Retains power, but heavily battered. Ketu on Stalin's Moon and the 4th house Counting Day Moon mean they win the required seats by razor-thin margins. It will be the most stressful victory of Stalin's career, heavily relying on the alliance's combined strength rather than an absolute DMK monopoly.</p>
+        <div className="pdf-section glass-panel" style={{ padding: '2.5rem 3.5rem', marginBottom: '1rem', background: 'var(--color-navy)' }}>
+          <h4 style={{ fontSize: '1.7rem', color: '#fcc419', marginBottom: '1rem' }}>Astrological Seat Projection (Total: 234)</h4>
+          <p style={{ lineHeight: '1.8', color: '#F8F9FA', fontSize: '1.4rem', fontWeight: 500 }}>
+            The disruption caused by Rahu in Aquarius and TVK's Janma Rasi Voting Day Transit ensures a brutally fractured vote.
+          </p>
+        </div>
+
+        {/* PARTY BRACKETS AS ATOMIC SECTIONS */}
+        <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
+            <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #ff6b6b' }}>
+              <strong style={{ fontSize: '1.4rem', color: '#ff6b6b' }}>DMK Alliance (95 - 105 Seats):</strong>
+              <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Transitions to Opposition. Ketu-Janma creates a net loss of critical seats in northern/urban belts.</p>
             </div>
         </div>
 
-        <div className="pdf-section glass-panel" style={{ padding: '0 3.5rem', borderRadius: '0', background: 'var(--color-navy)' }}>
-            <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #51cf66', marginBottom: '2rem' }}>
-              <strong style={{ fontSize: '1.4rem', color: '#51cf66' }}>AIADMK Front (80 - 90 Seats):</strong>
-              <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.8', color: '#F8F9FA' }}><strong>Verdict:</strong> A ferocious comeback driven by EPS's 10th House Karma and Neecha Bhanga on counting day. They successfully absorb the anti-incumbency anger but fall short of absolute power largely because TVK cannibalizes their required youth swing votes. They become an overwhelmingly powerful opposition.</p>
+        <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
+            <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #51cf66' }}>
+              <strong style={{ fontSize: '1.4rem', color: '#51cf66' }}>AIADMK Front (118 - 125 Seats):</strong>
+              <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Returns to Power. Labha Shani influence on counting day ensures a narrow but clear CM post victory.</p>
             </div>
         </div>
 
-        <div className="pdf-section glass-panel" style={{ padding: '0 3.5rem', borderRadius: '0', background: 'var(--color-navy)' }}>
-            <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #339af0', marginBottom: '2rem' }}>
+        <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
+            <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #339af0' }}>
               <strong style={{ fontSize: '1.4rem', color: '#339af0' }}>TVK / Vijay (20 - 25 Seats):</strong>
-              <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.8', color: '#F8F9FA' }}><strong>Verdict:</strong> Astrological History. The Janma Rasi transit on Voting Day ensures a legendary debut. While 234 solo contesting prevents a majority, securing 20+ seats on a debut marks TVK as the ultimate kingmaker and definitively announces Vijay as the inevitable future of Tamil Nadu politics.</p>
+              <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>The Kingmaker. Unprecedented 20+ debut marks Vijay as the inevitable future of TN politics.</p>
             </div>
         </div>
 
-        <div className="pdf-section glass-panel" style={{ padding: '0 3.5rem 3.5rem 3.5rem', marginBottom: '2rem', borderRadius: '0 0 20px 20px', background: 'var(--color-navy)' }}>
+        <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem 4rem 3.5rem', borderRadius: '0 0 20px 20px', background: 'var(--color-navy)' }}>
             <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #fcc419' }}>
-              <strong style={{ fontSize: '1.4rem', color: '#fcc419' }}>NTK / Seeman (0 - 2 Seats but ~10-12% Vote Share):</strong>
-              <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.8', color: '#F8F9FA' }}><strong>Verdict:</strong> The tragic victim of the First-Past-The-Post (FPTP) voting system and Rahu/Ketu rigidness. Despite immense crowds and Jupiter's massive vote share expansion, Ketu's isolation prevents tactical alliances, and TVK steals the limelight. They remain an immense ideological force but lack legislative footprint.</p>
+              <strong style={{ fontSize: '1.4rem', color: '#fcc419' }}>NTK / Seeman (0 - 2 Seats):</strong>
+              <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Ideological Force. Tragic victim of FPTP and Ketu isolation preventing tactical alliances.</p>
             </div>
         </div>
 
@@ -789,6 +856,7 @@ const ElectionAnalysis: React.FC = () => {
              <strong style={{ color: '#51cf66', fontSize: '1.2rem', letterSpacing: '0.5px' }}>For Consultation : Contact by WhatsApp Rajagopal Kannan 98410 33514</strong>
           </div>
         </div>
+
 
       </div>
     </motion.div>
