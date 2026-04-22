@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: jamakkal-prasna-backend
+    env: python
+    buildCommand: "cd backend && pip install -r requirements.txt"
+    startCommand: "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+  
+  - type: web
+    name: jamakkal-prasna-frontend
+    env: node
+    buildCommand: "cd frontend && npm install && npm run build"
+    startCommand: "cd frontend && npm run preview -- --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: NODE_VERSION
+        value: 20.0.0
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: jamakkal-prasna-backend
+          envVarKey: RENDER_EXTERNAL_URL

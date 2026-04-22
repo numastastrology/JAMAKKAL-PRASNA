@@ -131,7 +131,7 @@ const initialCandidatesData: CandidateData[] = [
     color: '#fcc419',
     dobInfo: '08.11.1966 - 06:15 AM, Sivagangai',
     astrology: 'Lagna: Scorpio | Rasi: Leo | Star: Purva Phalguni | Dasa: Jupiter - Bhukti: Venus',
-    verdict: 'Despite triggering massive, organic crowd fervour and vastly expanding his overall state-wide vote share percentage, mathematical conversions evade him. Ashtama Shani and an unyielding Ketu prevent the tactical alliances required to win in a First-Past-The-Post system.',
+    verdict: 'Despite triggering massive, organic crowd fervour and vastly expanding his overall state-wide vote share percentage, mathematical conversions evade him. Ashtama Shani and an unyielding Ketu prevent the tactical alliances required to win in a winner-takes-all system.',
     chartData: [
       'ரா', // Aries
       '', // Taurus
@@ -160,7 +160,7 @@ const initialCandidatesData: CandidateData[] = [
     ],
     negatives: [
       'Ashtama Shani represents the ultimate mathematical barrier, brutally blocking seat conversions.',
-      'Ketu\'s isolation heavily enforces a stubborn refusal to form critical tactical alliances needed to win FPTP elections.',
+      'Ketu\'s isolation heavily enforces a stubborn refusal to form critical tactical alliances needed to win winner-takes-all elections.',
       'Shocking pre-poll defections of long-standing district lieutenants due to Rahu in 7th.',
       'Direct demographic collision with Vijay (TVK) shatters his monopoly on the rebellious youth vote.',
       'Over-aggression in speeches alienates the neutral, peace-seeking, and elderly voting blocks.',
@@ -335,7 +335,7 @@ const SouthIndianChart = ({ data, title, color, cellColors = {} }: { data: strin
 
 const ElectionAnalysis: React.FC = () => {
   const [candidates, setCandidates] = useState<CandidateData[]>(initialCandidatesData);
-  const [displayLimit, setDisplayLimit] = useState<number>(4);
+  const [displayLimit, setDisplayLimit] = useState<number>(6);
   const [viewState, setViewState] = useState<'validation' | 'report'>('validation');
   const [editingId, setEditingId] = useState<CandidateId | null>(null);
   
