@@ -819,29 +819,51 @@ const ElectionAnalysis: React.FC = () => {
         {/* PARTY BRACKETS AS ATOMIC SECTIONS */}
         <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
             <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #ff6b6b' }}>
-              <strong style={{ fontSize: '1.4rem', color: '#ff6b6b' }}>DMK Alliance (95 - 105 Seats):</strong>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <strong style={{ fontSize: '1.4rem', color: '#ff6b6b' }}>DMK Alliance (95 - 105 Seats)</strong>
+                <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#ff6b6b' }}>Proj. Vote Share: ~35.5%</span>
+              </div>
               <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Transitions to Opposition. Ketu-Janma creates a net loss of critical seats in northern/urban belts.</p>
             </div>
         </div>
 
         <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
             <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #51cf66' }}>
-              <strong style={{ fontSize: '1.4rem', color: '#51cf66' }}>AIADMK Front (118 - 125 Seats):</strong>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <strong style={{ fontSize: '1.4rem', color: '#51cf66' }}>AIADMK Front (118 - 125 Seats)</strong>
+                <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#51cf66' }}>Proj. Vote Share: ~36.5%</span>
+              </div>
               <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Returns to Power. Labha Shani influence on counting day ensures a narrow but clear CM post victory.</p>
             </div>
         </div>
 
         <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
             <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #339af0' }}>
-              <strong style={{ fontSize: '1.4rem', color: '#339af0' }}>TVK / Vijay (20 - 25 Seats):</strong>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <strong style={{ fontSize: '1.4rem', color: '#339af0' }}>TVK / Vijay (20 - 25 Seats)</strong>
+                <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#339af0' }}>Proj. Vote Share: ~14.0%</span>
+              </div>
               <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>The Kingmaker. Unprecedented 20+ debut marks Vijay as the inevitable future of TN politics.</p>
             </div>
         </div>
 
-        <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem 4rem 3.5rem', borderRadius: '0 0 20px 20px', background: 'var(--color-navy)' }}>
+        <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
             <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #fcc419' }}>
-              <strong style={{ fontSize: '1.4rem', color: '#fcc419' }}>NTK / Seeman (0 - 2 Seats):</strong>
-              <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Ideological Force. Tragic victim of FPTP and Ketu isolation preventing tactical alliances.</p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <strong style={{ fontSize: '1.4rem', color: '#fcc419' }}>NTK / Seeman (0 - 2 Seats)</strong>
+                <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#fcc419' }}>Proj. Vote Share: ~7.5%</span>
+              </div>
+              <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Ideological Force. Tragic victim of winner-takes-all voting and Ketu isolation preventing tactical alliances.</p>
+            </div>
+        </div>
+
+        <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem 4rem 3.5rem', borderRadius: '0 0 20px 20px', background: 'var(--color-navy)' }}>
+            <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #ff9933' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <strong style={{ fontSize: '1.4rem', color: '#ff9933' }}>NDA / Others (0 - 2 Seats)</strong>
+                <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#ff9933' }}>Proj. Vote Share: ~4.0%</span>
+              </div>
+              <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Stagnated Growth. Lack of a massive Dravidian shield prevents seat conversion despite aggressive campaigning.</p>
             </div>
         </div>
 
