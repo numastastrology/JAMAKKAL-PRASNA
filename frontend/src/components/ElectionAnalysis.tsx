@@ -228,7 +228,7 @@ const tnCandidatesData: CandidateData[] = [
     dobInfo: '04.06.1984 - 12:00 PM, Karur',
     astrology: 'Lagna: Aries | Rasi: Cancer | Star: Ashlesha | Dasa: Jupiter - Bhukti: Venus',
     verdict: 'Massive aggressive expansion of party machinery and polarizing crowd-pulling capabilities. However, translating this intense momentum into widespread seat conversions hits a harsh mathematical ceiling without a solidified Dravidian alliance.',
-    chartData: ['','','','சந்','','','','','','','',''],
+    chartData: ['ல', 'சூரி புத சுக்', '', 'சந் மா', '', 'ரா', 'செ(R) சனி(R)', '', 'குரு(R)', '', '', 'கே'],
     positives: [
       'Transiting Jupiter in the 2nd house ensures massive influx of national financial backing.',
       'Exalted transit of Sun during election month supercharges his individual authoritative appeal.',
@@ -262,7 +262,7 @@ const tnCandidatesData: CandidateData[] = [
     dobInfo: '09.10.1968 - 12:00 PM, Puducherry',
     astrology: 'Lagna: Scorpio | Rasi: Aries | Star: Ashwini | Dasa: Saturn - Bhukti: Jupiter',
     verdict: 'Maintains an absolute, unshakeable grip over the Northern belt\'s sub-caste arithmetic. He will play a ruthless and decisive bargaining role in alliance formations, securing a highly concentrated block of reliable seats.',
-    chartData: ['சந்','','','','','','','','','','',''],
+    chartData: ['சந்', '', '', 'ரா', 'செ குரு', 'சூரி', 'புத(R) சுக் மா', 'ல', '', 'கே', '', 'சனி(R)'],
     positives: [
       'Saturn Dasa completely fortifies his traditional Northern Tamil Nadu strongholds.',
       'Jupiter Bhukti brings mature, diplomatic negotiation skills for securing maximum seats in alliances.',

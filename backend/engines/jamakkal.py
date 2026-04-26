@@ -151,9 +151,9 @@ class JamakkalEngine:
         """Step IV: Planetary Periods for Fruition"""
         # "Sun: 6m, Moon: Immediate, Mars: 6m, Merc: 2m, Jup: 1m, Ven: 15d, Sat: 1y, Rahu: 8m, Ketu: 3m"
         periods = {
-            "Sun": "6 Months", "Moon": "Immediate", "Mars": "6 Months", 
-            "Mercury": "2 Months", "Jupiter": "1 Month", "Venus": "15 Days", 
-            "Saturn": "1 Year", "Rahu": "8 Months", "Ketu": "3 Months"
+            "Sun": "6 Months", "Moon": "48 Min", "Mars": "1 day", 
+            "Mercury": "2 Months", "Jupiter": "1 Month", "Venus": "15 days", 
+            "Saturn": "1 Year", "Rahu": "1 Year", "Ketu": "1 Year", "Snake": "1 Year"
         }
         base_period = periods.get(planet, "Unknown")
         

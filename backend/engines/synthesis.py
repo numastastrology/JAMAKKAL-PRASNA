@@ -1008,11 +1008,11 @@ class SynthesisEngine:
             lord_status = self.transits.get(lord, {}).get("status", "")
             lord_rasi = self.positions.get(f"Jama {lord}", self.positions.get(lord, 1))
             if "Exalted" in lord_status: ray_mult = 3
-            elif "Debilitated" in lord_status: ray_mult = 0.5
+            elif "Debilitated" in lord_status: ray_mult = 0
             elif lord_rasi in self.OWN_SIGNS.get(lord, []): ray_mult = 2
             else: ray_mult = 1
             
-            if self._is_combust(lord):
+            if self._is_combust(lord) or "Retrograde" in (lord_status + self.transits.get(lord, {}).get("state", "")):
                 ray_mult *= 0.5
             
             eff_rays = lord_rays * ray_mult
@@ -1252,8 +1252,8 @@ class SynthesisEngine:
                 effective_rays = base_rays * 3
                 dignity = "exalted 3×"
             elif "Debilitated" in planet_status or self.DEBILITATION_SIGNS.get(planet_name) == planet_rasi:
-                effective_rays = base_rays // 2
-                dignity = "debilitated 0.5×"
+                effective_rays = 0
+                dignity = "debilitated 0×"
             elif planet_rasi in self.OWN_SIGNS.get(planet_name, []):
                 effective_rays = base_rays * 2
                 dignity = "own sign 2×"
@@ -1261,9 +1261,9 @@ class SynthesisEngine:
                 effective_rays = base_rays
                 dignity = "normal"
             
-            if self._is_combust(planet_name):
+            if self._is_combust(planet_name) or "Retrograde" in (planet_status + self.transits.get(planet_name, {}).get("state", "")):
                 effective_rays = effective_rays // 2
-                dignity += " combust 0.5×"
+                dignity += " combust/retrograde 0.5×"
             
             if effective_rays == 0:
                 continue
