@@ -289,7 +289,7 @@ class PremiumPDFGenerator:
             page_story.append(Paragraph("Predicted Match Winner", ParagraphStyle('MainWin', fontSize=18, textColor=colors.HexColor("#FFCC00"), alignment=TA_CENTER, fontName='Helvetica-Bold')))
             page_story.append(Spacer(1, 0.15*inch))
             winner_txt = cd.get('predicted_winner', 'Unknown')
-            page_story.append(Paragraph(f"{winner_txt}", ParagraphStyle('MainWinBig', fontSize=26, textColor=colors.white, alignment=TA_CENTER, fontName='Helvetica-Bold')))
+            page_story.append(Paragraph(f"{winner_txt}", ParagraphStyle('MainWinBig', fontSize=26, leading=32, textColor=colors.white, alignment=TA_CENTER, fontName='Helvetica-Bold')))
             
             # Dashed line
             page_story.append(Spacer(1, 0.3*inch))
@@ -308,7 +308,7 @@ class PremiumPDFGenerator:
                     reason = cd.get('bat_first_score_reason') if is_bat_first else cd.get('bat_second_score_reason')
                 
                 return [
-                    Paragraph(f"{team_name}", ParagraphStyle('TName', fontSize=14, textColor=colors.HexColor("#FFCC00"), fontName='Helvetica-Bold', spaceAfter=4)),
+                    Paragraph(f"{team_name}", ParagraphStyle('TName', fontSize=14, leading=18, textColor=colors.HexColor("#FFCC00"), fontName='Helvetica-Bold', spaceAfter=4)),
                     Paragraph(f"<font color='#8C52FF'>{role}</font>", ParagraphStyle('TRole', fontSize=10, textColor=colors.white, fontName='Helvetica-Bold', spaceAfter=12)),
                     Paragraph(f"<font color='#8C52FF'>Score Prediction:</font> {score} runs", box_style),
                     Paragraph("Astrological Logic:", ParagraphStyle('Sub', fontSize=9, textColor=colors.HexColor("#FFCC00"), fontName='Helvetica-Bold')),
@@ -336,7 +336,7 @@ class PremiumPDFGenerator:
             page_story.append(Spacer(1, 0.4*inch))
             
             # 4. Detailed Questions Breakdown
-            page_story.append(Paragraph("Astrological Match Analysis", ParagraphStyle('H2', fontSize=14, textColor=colors.HexColor("#8C52FF"), fontName='Helvetica-Bold', spaceAfter=10)))
+            page_story.append(Paragraph("Astrological Match Analysis", ParagraphStyle('H2', fontSize=14, leading=18, textColor=colors.HexColor("#8C52FF"), fontName='Helvetica-Bold', spaceAfter=10)))
             
             # Q1. Toss
             page_story.append(Paragraph("1. WHO WILL WIN THE TOSS?", box_q))
@@ -378,8 +378,6 @@ class PremiumPDFGenerator:
             return page_story
 
         story.extend(_build_page(is_noray=False))
-        story.append(PageBreak())
-        story.extend(_build_page(is_noray=True))
         
         def _bg_rect(canvas, doc):
             canvas.saveState()

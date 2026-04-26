@@ -141,25 +141,12 @@ class PredictionEngine:
         if not self._has_natal():
             return ""
         
-        lagna_rasi = self.natal.get("LagnaRasi", 0)
-        states = self.natal.get("PlanetaryStates", {})
+        days_min, days_max = self._get_natal_fruition_days()
         n_nak = self.natal.get("Nakshatra", "")
-        rp_state = str(states.get(self.ruling_planet, ""))
+        speed = "rapid" if days_min <= 5 else "moderate" if days_min <= 10 else "gradual" if days_min >= 15 else "steady"
         
-        # Determine fruition speed based on natal alignment
-        alignment = self._rel_house(self.udayam, lagna_rasi) if lagna_rasi else 0
-        if alignment in [1, 5, 9]:  # Trine — fast fruition
-            window = "within 3-5 days of the transit"
-            speed = "rapid"
-        elif alignment in [4, 7, 10]:  # Kendram — moderate
-            window = "within 7-12 days of the transit"
-            speed = "moderate"
-        elif alignment in [6, 8, 12]:  # Dusthana — slow
-            window = "within 15-25 days of the transit"
-            speed = "gradual"
-        else:
-            window = "within 10-15 days of the transit"
-            speed = "steady"
+        states = self.natal.get("PlanetaryStates", {})
+        rp_state = str(states.get(self.ruling_planet, ""))
         
         # Modifier from natal planet state
         if "Friend" in rp_state or "Own" in rp_state:
@@ -171,7 +158,23 @@ class PredictionEngine:
         else:
             modifier = "at a natural pace"
         
-        return f"For this native ({self.natal.get('Lagna', '')} Lagna, {n_nak}), the effect is expected to manifest {window} — {speed} fruition, {modifier}."
+        return f"For this native ({self.natal.get('Lagna', '')} Lagna, {n_nak}), the effect is expected to manifest within {days_min}-{days_max} days of the transit — {speed} fruition, {modifier}."
+
+    def _get_natal_fruition_days(self) -> Tuple[int, int]:
+        """Returns the min and max days for fruition based on native alignment."""
+        if not self._has_natal():
+            return (10, 15)  # Default
+            
+        lagna_rasi = self.natal.get("LagnaRasi", 0)
+        alignment = self._rel_house(self.udayam, lagna_rasi) if lagna_rasi else 0
+        if alignment in [1, 5, 9]:  # Trine — fast fruition
+            return (3, 5)
+        elif alignment in [4, 7, 10]:  # Kendram — moderate
+            return (7, 12)
+        elif alignment in [6, 8, 12]:  # Dusthana — slow
+            return (15, 25)
+        else:
+            return (10, 15)
 
     def _get_transit_date_raw(self) -> _dt.datetime:
         """Helper to get the raw transit datetime."""
@@ -837,6 +840,21 @@ class PredictionEngine:
         s_result = s_engine.generate_synthesis()
         transit_date_raw, next_rasi = s_engine._get_kavippu_lift_date_raw()
         transit_date = f"approximately around {transit_date_raw.strftime('%B %d, %Y')}"
+        # Calculate Fruition Window Dates
+        f_min, f_max = self._get_natal_fruition_days()
+        fruition_start = (transit_date_raw + _dt.timedelta(days=f_min)).strftime('%B %d, %Y')
+        fruition_end = (transit_date_raw + _dt.timedelta(days=f_max)).strftime('%B %d, %Y')
+        fruition_window_str = f"{fruition_start} to {fruition_end}"
+        
+        # Calculate synchronized secondary dates
+        # Point 2 (Initial Clarity): shortly after or during fruition start
+        clarity_days = max(2, f_min)
+        clarity_date = (transit_date_raw + _dt.timedelta(days=clarity_days)).strftime('%B %d, %Y')
+        
+        # Point 3 (Concrete Opportunity): f_max + buffer
+        opp_days_min = f_max + 2
+        opp_days_max = f_max + 10
+        
         final_manifest_date = (transit_date_raw + _dt.timedelta(days=41)).strftime('%B %d, %Y')
         br = "<br/>"
         bull = "&#8226;"
@@ -862,10 +880,11 @@ class PredictionEngine:
                 f"the native will see a clear opening for the desired professional outcome."
                 f"{br}{br}"
                 f"<b>Outcome Forecast:</b>{br}"
-                f"{bull} Initial clarity and direction will emerge within 7-10 days of consistent effort.{br}"
-                f"{bull} A concrete opportunity (interview, offer, or business lead) is expected within 15-25 days.{br}"
-                f"{bull} Full professional manifestation - new role, confirmation, or business establishment - expected approximately around {final_manifest_date} (Transit + 41 days).{br}"
-                f"{bull} The Kavippu block in {kav_rel}H will dissolve as the ruling planet shifts sign."
+                f"{bull} <b>FRUITION WINDOW: {fruition_window_str}</b> — key results manifest post-transit.{br}"
+                f"{bull} Initial clarity and signs of direction will emerge around {clarity_date}.{br}"
+                f"{bull} A concrete opportunity (interview, offer, or lead) is expected between {opp_days_min}-{opp_days_max} days post-transit.{br}"
+                f"{bull} Full professional manifestation expected approximately around {final_manifest_date} (Transit + 41 days).{br}"
+                f"{bull} The Kavippu block in {kav_rel}H will naturally dissolve with the shift."
                 f"{br}{br}"
                 f"<b>Essential Actions to Accelerate Results:</b>{br}"
                 f"{bull} Perform all career-related activities during {self.ruling_planet} Hora for maximum benefit{br}"
@@ -880,10 +899,11 @@ class PredictionEngine:
                 f"{self.ruling_planet}'s transit to {next_rasi} ({transit_date}) marks the auspicious window for the alliance to progress."
                 f"{br}{br}"
                 f"<b>Outcome Forecast:</b>{br}"
-                f"{bull} Family discussions and initial alignment will gain momentum within 10-15 days.{br}"
-                f"{bull} A formal proposal or decisive meeting is likely within 20-30 days.{br}"
-                f"{bull} Final commitment or alliance confirmation expected approximately around {final_manifest_date} (Transit + 41 days).{br}"
-                f"{bull} The karmic delays indicated by Kavippu in {kav_rel}H will ease as the planetary energy shifts."
+                f"{bull} <b>FRUITION WINDOW: {fruition_window_str}</b> — alliance gate opens and manifests here.{br}"
+                f"{bull} Family discussions and initial alignment will gain momentum around {clarity_date}.{br}"
+                f"{bull} A formal proposal or decisive meeting is likely between {opp_days_min}-{opp_days_max} days post-transit.{br}"
+                f"{bull} Final commitment expected approximately around {final_manifest_date} (Transit + 41 days).{br}"
+                f"{bull} The karmic delays indicated by Kavippu in {kav_rel}H will ease with the shift."
                 f"{br}{br}"
                 f"<b>Essential Actions to Accelerate Results:</b>{br}"
                 f"{bull} Offer white flowers to Goddess Parvati/Lakshmi on Fridays{br}"
@@ -898,10 +918,11 @@ class PredictionEngine:
                 f"The planetary ruler {self.ruling_planet} shifting to {next_rasi} ({transit_date}) will mark the point of significant improvement."
                 f"{br}{br}"
                 f"<b>Recovery Forecast:</b>{br}"
-                f"{bull} Initial symptomatic improvement expected within 5-7 days of following prescribed treatment.{br}"
-                f"{bull} Sustained stabilization and noticeble health gains within 15-21 days.{br}"
-                f"{bull} Full recovery or significant turning point expected approximately around {final_manifest_date} (Transit + 41 days).{br}"
-                f"{bull} The health blockage from Kavippu in {kav_rel}H will release as the ruling planet transitions."
+                f"{bull} <b>FRUITION WINDOW: {fruition_window_str}</b> — significant relief and healing manifest.{br}"
+                f"{bull} Initial symptomatic improvement expected around {clarity_date}.{br}"
+                f"{bull} Sustained stabilization and noticeble health gains between {opp_days_min}-{opp_days_max} days post-transit.{br}"
+                f"{bull} Full recovery expected approximately around {final_manifest_date} (Transit + 41 days).{br}"
+                f"{bull} The health blockage from Kavippu in {kav_rel}H will release with the transition."
                 f"{br}{br}"
                 f"<b>Essential Actions to Accelerate Recovery:</b>{br}"
                 f"{bull} Strictly adhere to medical advice and prescribed medications{br}"
@@ -916,9 +937,10 @@ class PredictionEngine:
                 f"The ruling planet {self.ruling_planet} shifting to {next_rasi} ({transit_date}) marks the key moment for the win."
                 f"{br}{br}"
                 f"<b>Outcome Forecast:</b>{br}"
-                f"{bull} Initial strategy and tactical alignment will show results within 7-10 days.{br}"
-                f"{bull} A significant breakthrough or clear advantage is likely within 15-25 days.{br}"
-                f"{bull} Final victory or goal fulfillment expected approximately around {final_manifest_date} (Transit + 41 days).{br}"
+                f"{bull} <b>FRUITION WINDOW: {fruition_window_str}</b> — competitive edge and victory manifest here.{br}"
+                f"{bull} Initial strategy and tactical alignment will show results around {clarity_date}.{br}"
+                f"{bull} A significant breakthrough or clear advantage is likely between {opp_days_min}-{opp_days_max} days post-transit.{br}"
+                f"{bull} Final victory/goal fulfillment expected approximately around {final_manifest_date} (Transit + 41 days).{br}"
                 f"{bull} The competitive hurdles indicated by Kavippu in {kav_rel}H will ease with the shift."
                 f"{br}{br}"
                 f"<b>Essential Actions to Accelerate Results:</b>{br}"
@@ -933,10 +955,11 @@ class PredictionEngine:
                 f'The Jamakkal Prasna analysis regarding "{query_ctx}" indicates the configuration is {favour}.{diag_injection} '
                 f"The key planetary transition of {self.ruling_planet} into {next_rasi} ({transit_date}) will be the defining shift point."
                 f"{br}{br}"
-                f"<b>Outcome Forecast:</b>{br}"
-                f"{bull} First signs of positive movement expected within 10-14 days.{br}"
-                f"{bull} Tangible progress and visible results within 21-30 days.{br}"
-                f"{bull} Complete resolution or desired outcome expected approximately around {final_manifest_date} (Transit + 41 days).{br}"
+                f"<b>Outcome Forecast:</b><br/>"
+                f"{bull} <b>FRUITION WINDOW: {fruition_window_str}</b> — desired outcome starts to manifest.{br}"
+                f"{bull} First signs of positive movement expected around {clarity_date}.{br}"
+                f"{bull} Tangible progress and visible results between {opp_days_min}-{opp_days_max} days post-transit.{br}"
+                f"{bull} Complete resolution/desired outcome expected approximately around {final_manifest_date} (Transit + 41 days).{br}"
                 f"{bull} The Kavippu block in {kav_rel}H will naturally dissolve with the planetary shift."
                 f"{br}{br}"
                 f"<b>Essential Actions to Accelerate Results:</b>{br}"

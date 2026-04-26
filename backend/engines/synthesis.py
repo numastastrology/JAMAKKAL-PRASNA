@@ -203,29 +203,18 @@ class SynthesisEngine:
         return meanings.get(distance, "indicating a neutral relationship between the energies.")
 
     def _get_natal_fruition_window(self) -> str:
-        """Returns native-specific fruition text — how quickly effect manifests AFTER the transit."""
+        """Returns a native-specific fruition window text based on birth chart."""
         if not self.natal or not self.natal.get("Lagna"):
             return ""
         
-        lagna_rasi = self.natal.get("LagnaRasi", 0)
-        states = self.natal.get("PlanetaryStates", {})
+        days_min, days_max = self._get_natal_fruition_days()
         n_nak = self.natal.get("Nakshatra", "")
+        speed = "rapid" if days_min <= 5 else "moderate" if days_min <= 10 else "gradual" if days_min >= 15 else "steady"
+        
+        states = self.natal.get("PlanetaryStates", {})
         rp_state = str(states.get(self.ruling_planet, ""))
         
-        alignment = self._get_house_num(lagna_rasi, self.udayam) if lagna_rasi else 0
-        if alignment in [1, 5, 9]:
-            window = "within 3-5 days of the transit"
-            speed = "rapid"
-        elif alignment in [4, 7, 10]:
-            window = "within 7-12 days of the transit"
-            speed = "moderate"
-        elif alignment in [6, 8, 12]:
-            window = "within 15-25 days of the transit"
-            speed = "gradual"
-        else:
-            window = "within 10-15 days of the transit"
-            speed = "steady"
-        
+        # Modifier from natal planet state
         if "Friend" in rp_state or "Own" in rp_state:
             modifier = "accelerated by supportive natal energy"
         elif "Enemy" in rp_state:
@@ -235,7 +224,19 @@ class SynthesisEngine:
         else:
             modifier = "at a natural pace"
         
-        return f" For this native ({self.natal.get('Lagna', '')} Lagna, {n_nak}), effects manifest {window} — {speed} fruition, {modifier}."
+        return f"For this native ({self.natal.get('Lagna', '')} Lagna, {n_nak}), effects manifest within {days_min}-{days_max} days of the transit — {speed} fruition, {modifier}."
+
+    def _get_natal_fruition_days(self) -> Tuple[int, int]:
+        """Returns the min and max days for fruition based on native alignment."""
+        if not self.natal or not self.natal.get("Lagna"):
+            return (10, 15)
+            
+        lagna_rasi = self.natal.get("LagnaRasi", 0)
+        alignment = self._get_house_num(lagna_rasi, self.udayam) if lagna_rasi else 0
+        if alignment in [1, 5, 9]: return (3, 5)
+        if alignment in [4, 7, 10]: return (7, 12)
+        if alignment in [6, 8, 12]: return (15, 25)
+        return (10, 15)
 
     def _get_kavippu_lift_date_raw(self) -> Tuple[_dt.datetime, str]:
         """Helper to get the raw datetime when Kavippu eases. Supports Retrograde Nodes."""
@@ -1372,6 +1373,11 @@ class SynthesisEngine:
         """Generates an elaborative, customer-friendly conclusion with phases on separate lines and remedy bullets."""
         kav_h = self._get_house_num(self.kavippu, self.udayam)
         lift_date, next_sign_name = self._get_kavippu_lift_date_raw()
+        f_min, f_max = self._get_natal_fruition_days()
+        fruition_start = (lift_date + _dt.timedelta(days=f_min)).strftime('%B %d, %Y')
+        fruition_end = (lift_date + _dt.timedelta(days=f_max)).strftime('%B %d, %Y')
+        fruition_window_str = f"{fruition_start} to {fruition_end}"
+        
         rp = self.ruling_planet
         
         # Build intent-specific starting sentence
@@ -1409,6 +1415,7 @@ class SynthesisEngine:
         next_rasi = rasi_names[(curr_rasi % 12)]
         br = "<br/>"
         bull = "&#8226;"
+        f_win_line = f"{bull} <b>FRUITION WINDOW: {fruition_window_str}</b> — key manifestation period.{br}"
 
         if self.intent == "COMPETITION":
             is_cricket = self.jam.get("is_strict_competition_mode") or any(w in self.query_text.lower() for w in ["cricket", "match", "score", "toss", "vs", "team a", "team b"])
@@ -1474,6 +1481,7 @@ class SynthesisEngine:
                     f"The shift of {rp} into {next_sign_name} ({lift_time}) will be the defining moment for triumph."
                     f"{br}{br}"
                     f"<b>Expected Timeline:</b>{br}"
+                    f"{f_win_line}"
                     f"{bull} Phase 1 (Now): Strategy and preparation are key. Maintain focus.{br}"
                     f"{bull} Phase 2 (Event Window): Peak performance and favorable turns during the event.{br}"
                     f"{bull} Phase 3 (Outcome): Final result or victory confirmation expected approximately around {final_manifest_date}."
@@ -1509,6 +1517,7 @@ class SynthesisEngine:
                     f"The ruling planet {rp} will transit to {next_rasi} {lift_time}, which marks the key window for career breakthrough."
                     f"{br}{br}"
                     f"<b>Expected Timeline:</b>{br}"
+                    f"{f_win_line}"
                     f"{bull} Phase 1 (Days 1-10): Begin applying and networking actively.{br}"
                     f"{bull} Phase 2 (Days 11-25): A significant opportunity or interview will emerge.{br}"
                     f"{bull} Phase 3 (Days 26-41): Expect a concrete outcome - offer, confirmation, or clear direction. Full career manifestation expected approximately around {final_manifest_date} (Transit + 41 days)."
