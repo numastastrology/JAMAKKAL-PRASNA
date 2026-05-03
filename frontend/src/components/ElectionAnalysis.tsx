@@ -6,7 +6,8 @@ import { jsPDF } from 'jspdf';
 
 type CandidateId = 
   | 'stalin' | 'eps' | 'seeman' | 'vijay' | 'annamalai' | 'ramadoss'
-  | 'mamata' | 'suvendu' | 'abhishek' | 'sukanta' | 'adhir' | 'salim';
+  | 'mamata' | 'suvendu' | 'abhishek' | 'sukanta' | 'adhir' | 'salim'
+  | 'pinarayi' | 'satheesan' | 'surendran';
 
 interface CandidateData {
   id: CandidateId;
@@ -36,7 +37,7 @@ const tnCandidatesData: CandidateData[] = [
       '',             // Taurus 1
       '',             // Gemini 2
       '(கே)',          // Cancer 3
-      'சந்',           // Leo 4 (Removed ல)
+      'ல சந்',        // Leo 4
       '',             // Virgo 5
       '(சனி) மா',      // Libra 6
       '',             // Scorpio 7
@@ -575,6 +576,194 @@ const wbCandidatesData: CandidateData[] = [
   }
 ];
 
+const keralaCandidatesData: CandidateData[] = [
+  {
+    id: 'pinarayi',
+    name: 'Pinarayi Vijayan (LDF)',
+    icon: <Crown size={20} />,
+    color: '#d32f2f',
+    dobInfo: '24.05.1945 - 12:00:00, Kannur',
+    astrology: 'Lagna: Leo | Rasi: Libra | Star: Vishakha | Dasa: Jupiter - Bhukti: Venus',
+    verdict: 'The "Captain" of Kerala politics navigates a complex Saturnian landscape. His Jupiter Dasa provides a "Mahapurusha" shield, but transiting Saturn in the 8th from Rasi (Ashtama Shani) indicates intense administrative challenges and health-related stamina drains. While his grassroots "Red Base" remains structurally sound, the astrological alignment suggests a transition from absolute dominance to a period of "Resilient Defense".',
+    chartData: [
+      'செ',          // Aries 0
+      'சூரி புத',     // Taurus 1
+      'சனி ரா',       // Gemini 2
+      '',             // Cancer 3
+      'ல குரு',       // Leo 4
+      '',             // Virgo 5
+      'சந்',          // Libra 6
+      '',             // Scorpio 7
+      'கே',           // Sagittarius 8
+      '',             // Capricorn 9
+      '',             // Aquarius 10
+      'மா'            // Pisces 11
+    ],
+    positives: [
+      'Jupiter in the 1st from Lagna (Natal) grants him an unshakeable, authoritative persona that commands respect.',
+      'Exalted Moon (Taurus) connection through Rasi Lord Venus ensures a strong emotional bond with the rural proletariat.',
+      'Transiting Jupiter in Taurus (10th from Lagna) grants him "Karma-Siddhi"—success in executive decision-making.',
+      'Mars in the 9th house (Natal) grants him a fierce, warrior-like spirit that never retreats from political confrontation.',
+      'Saturn in the 11th (Natal) ensures a dedicated, disciplined party cadre that operates with military precision.',
+      'Venus in the 9th (Natal) provides a "Lakshmi Yoga" like protection for state welfare schemes.',
+      'The "Vishakha" Nakshatra energy grants him the "Cutting Edge" needed to dismantle opposition narratives.',
+      'Strong 10th house (Natal) ensures his legacy as a transformative administrator remains intact.',
+      'Mercury transiting the 10th house during the poll month fuels sharp, reactive communication strategies.',
+      'Rahu in the 11th (Natal) magnifying his reach among the non-traditional voter segments.'
+    ],
+    negatives: [
+      'Transiting Saturn in the 8th from Janma Rasi (Ashtama Shani) triggers sudden administrative shocks and legal hurdles.',
+      'Jupiter-Rahu conjunction in the natal chart indicates recurring controversies involving family-linked entities.',
+      'Ketu transiting the 12th from Lagna triggers moments of "Workplace Isolation" and strategic miscalculations.',
+      'Sun transiting the 9th from Natal Sun triggers health issues and stamina drains during the peak summer campaign.',
+      'The "Ego-Planet" (Sun) in the 10th from Dasa Lord indicates friction with central administrative bodies.',
+      'Mars transit in the 8th from Lagna triggers sudden, violent localized clashes that damage the law-and-order narrative.',
+      'Venus-Saturn opposition in the natal chart creates friction with traditionalist elements within the alliance.',
+      'Mercury as the 2nd and 11th lord in the 10th (Natal) indicates "Intellectual Burnout" under relentless pressure.',
+      'Natal Saturn-Rahu conjunction triggers "Ancestral Karma" that demands extreme accountability.',
+      'The polarization of Kerala politics leaves his "Development" narrative vulnerable to emotional identity-based waves.'
+    ]
+  },
+  {
+    id: 'satheesan',
+    name: 'V.D. Satheesan (UDF)',
+    icon: <Users size={20} />,
+    color: '#00b0ff',
+    dobInfo: '31.05.1964 - 12:00:00, Ernakulam',
+    astrology: 'Lagna: Leo | Rasi: Aquarius | Star: Satabhisha | Dasa: Mercury - Bhukti: Jupiter',
+    verdict: 'The "Sophisticated Challenger" is in a "Mercury-Jupiter" resonance that fuels sharp legislative skill and intellectual growth. His Satabhisha Nakshatra grants him the "100 Physicians" energy—the ability to heal and rebuild a fragmented party structure. While transiting Saturn over Janma Rasi (Sade Sati Peak) brings extreme pressure, it also provides the "Saturnian Discipline" needed to mount a formidable challenge to the incumbent.',
+    chartData: [
+      '',             // Aries 0
+      'சூரி செ குரு', // Taurus 1
+      'புத சுக் ரா',  // Gemini 2
+      '',             // Cancer 3
+      'ல',            // Leo 4
+      '',             // Virgo 5
+      '',             // Libra 6
+      '',             // Scorpio 7
+      'கே',           // Sagittarius 8
+      '',             // Capricorn 9
+      'சந் சனி',       // Aquarius 10
+      ''              // Pisces 11
+    ],
+    positives: [
+      'Mercury Dasa (Lagna Lord) acts as a "Sudarshana Chakra" for his communication and parliamentary strategy.',
+      'Jupiter Bhukti in the 10th from Lagna (Natal) ensures he successfully gathers a diverse, intellectual support base.',
+      'Transiting Jupiter in the 4th from Janma Rasi aspects his 10th house, ensuring a "Karma-Siddhi" surge.',
+      'Mars-Sun conjunction in the 10th (Natal) grants him "Digbala" and the authority of a natural leader.',
+      'Venus in the 11th (Natal) ensures a dedicated, emotional core vote bank among the urban middle class.',
+      'The "Satabhisha" Nakshatra energy allows him to handle complex, hidden political negotiations with ease.',
+      'Transiting Saturn in Aquarius (Janma Shani) rewards his long-term organizational building through sheer hard work.',
+      'Rahu in the 11th (Natal) grants him the ability to handle unconventional and hidden political tactics.',
+      'Mercury\'s transit in the 10th house (Gochara) fuels his sharp, data-driven political rhetoric.',
+      'Strong 11th house (Natal) ensures he remains the undisputed leader of the opposition alliance.'
+    ],
+    negatives: [
+      'Transiting Saturn over Natal Moon (Janma Shani) triggers "Sade Sati" peak—extreme mental and physical fatigue.',
+      'Rahu transiting the 8th house from Janma Rasi triggers sudden, unexpected internal mutinies in the UDF unit.',
+      'Ketu in the 5th (Natal) indicates high risk to reputation through subordinates\' impulsive actions.',
+      'Sun transiting the 10th from Janma Rasi triggers aggressive opposition counter-attacks on his "Elite" image.',
+      'The "Intellectual" branding fails to penetrate the deepest, most "Emotional" pockets of rural Kerala.',
+      'Mars transit in the 4th house from Lagna triggers aggressive, heated exchanges with local administrative officers.',
+      'Natal Saturn-Moon conjunction triggers "Punarphoo Dosha"—moments of deep uncertainty on results day.',
+      'Venus as the 3rd and 10th lord in the 11th (Natal) indicates gains are primarily "Inspirational" rather than "Numerical".',
+      'Jupiter\'s transit in the 4th indicates heavy administrative workload that limits his time for personal campaigning.',
+      'The mathematical barrier of the LDF\'s structural "Red Base" remains the ultimate "Saturnian" wall.'
+    ]
+  },
+  {
+    id: 'surendran',
+    name: 'K. Surendran (BJP)',
+    icon: <Shield size={20} />,
+    color: '#ff9933',
+    dobInfo: '10.03.1970 - 12:00:00, Kozhikode',
+    astrology: 'Lagna: Taurus | Rasi: Pisces | Star: Uttara Bhadrapada | Dasa: Jupiter - Bhukti: Venus',
+    verdict: 'The "Relentless Crusader" faces a "Jupiter-Venus" phase that amplifies his polarizing crowd-pulling capabilities. His Pisces Rasi receiving the 9th aspect from transiting Jupiter grants him a "Bhagya" surge. While seat conversions remain a mathematical challenge in Kerala\'s bipolarity, his chart shows a significant "Ideological Breakthrough"—expanding the party\'s footprint into previously inaccessible demographic belts.',
+    chartData: [
+      'சந் சுக்',      // Aries 0
+      'ல',            // Taurus 1
+      '',             // Gemini 2
+      '',             // Cancer 3
+      'கே',           // Leo 4
+      '',             // Virgo 5
+      'குரு(R)',      // Libra 6
+      '',             // Scorpio 7
+      '',             // Sagittarius 8
+      '',             // Capricorn 9
+      'சூரி புத ரா',   // Aquarius 10
+      'செ சனி'        // Pisces 11
+    ],
+    positives: [
+      'Jupiter Dasa (Bhagya Lord) ensures massive influx of national strategic and financial backing.',
+      'Venus Bhukti allows for a polished, highly visible media presentation that resonates with youth.',
+      'Transiting Jupiter in Taurus (Lagna) creates a "Protective Shield" and attracts floating voters.',
+      'Mars in the 12th (Natal) ensures he remains a fierce, unyielding street fighter who commands personal loyalty.',
+      'Sun in the 10th house (Natal) grants him the authority of a "Principled Leader" and clear vision.',
+      'The "Uttara Bhadrapada" Nakshatra energy gives him a "Charismatic Authority" that is grounded in identity.',
+      'Transiting Saturn in the 11th from Lagna (Pisces) rewards his long-term, disciplined organizational building.',
+      'Rahu in the 10th (Natal) magnifying his communication reach through modern digital platforms.',
+      'Strong Navamsa alignments with the national party chart confirm him as the face of the challenge.',
+      'Exalted transit of Sun during election month supercharges his individual authoritative appeal.'
+    ],
+    negatives: [
+      'Total lack of deep-rooted local arithmetic acts as an ultimate mathematical barricade.',
+      'Sade Sati pressure for Pisces Rasi brings instances of extreme physical exhaustion and roadblocks.',
+      'Harsh planetary aspects on the 7th house make forming stable tactical alliances nearly impossible.',
+      'Rahu\'s transit over the 10th house triggers sudden, disruptive legal interventions in party-linked entities.',
+      'Over-aggression driven by Mars alienates the neutral, peace-seeking urban middle class.',
+      'Transiting Saturn in the 11th indicates that gains are primarily "Inspirational" rather than "Numerical".',
+      'Sudden internal party mutinies triggered by Ketu alignments just weeks before the poll.',
+      'Over-reliance on national narratives fails to resonate with hyper-local Kerala-specific issues.',
+      'Financial freezes in key constituencies during the critical last 48 hours of booth management.',
+      'Result day reveals high vote-share but critically low actual MLA seat conversions.'
+    ]
+  }
+];
+
+interface StateMetadata {
+  id: string;
+  name: string;
+  pollDate: string; // YYYY-MM-DD
+  resultsDate: string;
+  candidates: CandidateData[];
+  primaryCandidateId: CandidateId;
+}
+
+const STATES_CONFIG: Record<string, StateMetadata> = {
+  tamilnadu: {
+    id: 'tamilnadu',
+    name: 'Tamil Nadu',
+    pollDate: '2026-04-23',
+    resultsDate: '2026-05-04',
+    candidates: tnCandidatesData,
+    primaryCandidateId: 'stalin'
+  },
+  westbengal: {
+    id: 'westbengal',
+    name: 'West Bengal',
+    pollDate: '2026-04-23',
+    resultsDate: '2026-05-04',
+    candidates: wbCandidatesData,
+    primaryCandidateId: 'mamata'
+  },
+  kerala: {
+    id: 'kerala',
+    name: 'Kerala',
+    pollDate: '2026-04-09',
+    resultsDate: '2026-05-04',
+    candidates: keralaCandidatesData,
+    primaryCandidateId: 'pinarayi'
+  },
+  karnataka: {
+    id: 'karnataka',
+    name: 'Karnataka',
+    pollDate: '2028-05-10',
+    resultsDate: '2028-05-13',
+    candidates: [],
+    primaryCandidateId: 'stalin' // Dummy
+  }
+};
+
 const SouthIndianChart = ({ data, title, color, cellColors = {} }: { data: string[], title: string, color: string, cellColors?: Record<number, string> }) => {
   const getStyle = (index: number) => ({
     background: cellColors[index] || 'var(--color-navy-light)',
@@ -636,12 +825,10 @@ const ElectionAnalysis: React.FC = () => {
   const reportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (selectedState === 'tamilnadu') {
-      setCandidates(tnCandidatesData);
-      setSelectedCandidateId('stalin');
-    } else if (selectedState === 'westbengal') {
-      setCandidates(wbCandidatesData);
-      setSelectedCandidateId('mamata');
+    if (selectedState && STATES_CONFIG[selectedState]) {
+      const config = STATES_CONFIG[selectedState];
+      setCandidates(config.candidates);
+      setSelectedCandidateId(config.primaryCandidateId);
     } else {
       setCandidates([]);
     }
@@ -806,10 +993,25 @@ const ElectionAnalysis: React.FC = () => {
                style={{ padding: '10px 20px', background: 'rgba(255,255,255,0.05)', color: 'white', border: '1px solid var(--color-gold)', borderRadius: '8px', cursor: 'pointer', fontSize: '1.1rem', width: '250px' }}
              >
                 <option value="">-- Select State --</option>
-                <option value="tamilnadu">Tamil Nadu (2026)</option>
-                <option value="westbengal">West Bengal (2026)</option>
-                <option value="kerala" disabled>Kerala (Coming Soon)</option>
-                <option value="karnataka" disabled>Karnataka (Coming Soon)</option>
+                {Object.values(STATES_CONFIG).map(state => {
+                   const pollDate = new Date(state.pollDate);
+                   const resultsDate = new Date(state.resultsDate);
+                   const now = new Date();
+                   
+                   const isPastPoll = now >= pollDate;
+                   const isCountingDay = now.toISOString().split('T')[0] === state.resultsDate;
+                   
+                   let statusLabel = "";
+                   if (isCountingDay) statusLabel = " - Counting Live";
+                   else if (isPastPoll) statusLabel = " - 2026 Analysis";
+                   else statusLabel = " (Coming Soon)";
+
+                   return (
+                     <option key={state.id} value={state.id} disabled={!isPastPoll}>
+                       {state.name}{statusLabel}
+                     </option>
+                   );
+                })}
              </select>
            </div>
 
@@ -917,7 +1119,7 @@ const ElectionAnalysis: React.FC = () => {
             ← Back to Chart Validation
           </button>
           <h2 className="card-title text-gold" style={{ margin: 0 }}>
-            <Star /> {selectedState === 'tamilnadu' ? 'TN' : 'WB'} Election 2026 In-Depth Analysis
+            <Star /> {STATES_CONFIG[selectedState]?.name || selectedState.toUpperCase()} Election 2026 In-Depth Analysis
           </h2>
         </div>
         
@@ -947,7 +1149,7 @@ const ElectionAnalysis: React.FC = () => {
            <h1 style={{ fontSize: '3rem', color: '#fcc419', textAlign: 'center', marginBottom: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1rem' }}>
              <Star size={40} /> Astrological Analysis - Final Audited Report
            </h1>
-           <p style={{ textAlign: 'center', color: 'var(--color-text)', fontSize: '1.5rem', marginBottom: '2rem' }}>Comprehensive Astrological Audit - {selectedState === 'tamilnadu' ? 'TN' : 'WB'} 2026 Legislative Assembly Elections</p>
+           <p style={{ textAlign: 'center', color: 'var(--color-text)', fontSize: '1.5rem', marginBottom: '2rem' }}>Comprehensive Astrological Audit - {STATES_CONFIG[selectedState]?.name || selectedState.toUpperCase()} 2026 Legislative Assembly Elections</p>
            <div style={{ padding: '1rem 2rem', border: '1px solid var(--color-gold)', borderRadius: '12px', background: 'rgba(194, 151, 49, 0.1)', marginBottom: '3.5rem' }}>
              <p style={{ textAlign: 'center', color: 'var(--color-gold-light)', fontSize: '1.35rem', fontWeight: 'bold', margin: 0 }}>Astrological Analysis Executed by Rajagopal Kannan</p>
            </div>
@@ -1053,17 +1255,19 @@ const ElectionAnalysis: React.FC = () => {
         {/* MATH SYNTHESIS FRAGMENT 1: TN/WB Primary Party 1 */}
         <div className="pdf-section glass-panel" data-newpage="true" style={{ padding: '3.5rem', marginBottom: '1rem', border: '1px solid rgba(194,151,49,0.3)', background: 'var(--color-navy)' }}>
           <h3 style={{ fontSize: '2.1rem', color: '#fcc419', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem' }}>
-            <TrendingUp /> Mathematical Synthesis: {selectedState === 'tamilnadu' ? 'DMK Friction' : 'TMC Resurgence'} Logic
+            <TrendingUp /> Mathematical Synthesis: {selectedState === 'tamilnadu' ? 'DMK Friction' : selectedState === 'westbengal' ? 'TMC Resurgence' : 'LDF Resilience'} Logic
           </h3>
           <div style={{ background: selectedState === 'tamilnadu' ? 'rgba(255, 107, 107, 0.05)' : 'rgba(81, 207, 102, 0.05)', padding: '2.5rem', borderRadius: '15px', border: `1px solid ${selectedState === 'tamilnadu' ? 'rgba(255, 107, 107, 0.2)' : 'rgba(81, 207, 102, 0.2)'}` }}>
-             <h4 style={{ color: selectedState === 'tamilnadu' ? '#ff6b6b' : '#51cf66', fontSize: '1.6rem', marginBottom: '1.2rem' }}>
-               Why {selectedState === 'tamilnadu' ? '-25% Friction is given for DMK' : '+20% Resilience is given for TMC'}
-             </h4>
-             <p style={{ color: '#F8F9FA', fontSize: '1.25rem', marginBottom: '1.5rem', fontStyle: 'italic' }}>
-               {selectedState === 'tamilnadu' 
-                 ? 'The -25% is a cumulative "Nodal Squeeze" that forces the party from a potential sweep into a period of withdrawal.'
-                 : 'The +20% is a "Gaja-Kesari Shield" that protects the incumbent from intense central narrative pressure.'}
-             </p>
+              <h4 style={{ color: selectedState === 'tamilnadu' ? '#ff6b6b' : '#51cf66', fontSize: '1.6rem', marginBottom: '1.2rem' }}>
+                Why {selectedState === 'tamilnadu' ? '-25% Friction is given for DMK' : selectedState === 'westbengal' ? '+20% Resilience is given for TMC' : '+15% Persistence is given for LDF'}
+              </h4>
+              <p style={{ color: '#F8F9FA', fontSize: '1.25rem', marginBottom: '1.5rem', fontStyle: 'italic' }}>
+                {selectedState === 'tamilnadu' 
+                  ? 'The -25% is a cumulative "Nodal Squeeze" that forces the party from a potential sweep into a period of withdrawal.'
+                  : selectedState === 'westbengal'
+                  ? 'The +20% is a "Gaja-Kesari Shield" that protects the incumbent from intense central narrative pressure.'
+                  : 'The +15% is a "Saturnian Persistence" that maintains the core cadre strength despite high anti-incumbency.'}
+              </p>
              <ul style={{ color: '#F8F9FA', fontSize: '1.25rem', lineHeight: '2', paddingLeft: '1.5rem' }}>
                 {selectedState === 'tamilnadu' ? (
                   <>
@@ -1071,16 +1275,22 @@ const ElectionAnalysis: React.FC = () => {
                     <li style={{ marginBottom: '1.2rem' }}><strong>The Ashtama Shani Factor (-10%):</strong> Saturn in the 8th house for Leo Rasi indicates "Sudden Disruption" and "Administrative Shocks," leading to a 10% loss in structural efficiency.</li>
                     <li style={{ marginBottom: '1.2rem' }}><strong>The 4th House Influence (-5%):</strong> The planetary alignment on May 4 focuses energy on "Resting" (Sukha) rather than "Ruling" (Karma).</li>
                   </>
-                ) : (
+                ) : selectedState === 'westbengal' ? (
                   <>
                     <li style={{ marginBottom: '1.2rem' }}><strong>The Jupiter-Moon Resonance (+10%):</strong> Transiting Jupiter in Taurus on voting day aspects the Rasi Lord, creating an unbreakable emotional bond with rural female voters.</li>
                     <li style={{ marginBottom: '1.2rem' }}><strong>The Labha Shani Stability (+5%):</strong> Saturn in the 11th from Lagna ensures that while narratives shift, the structural vote bank remains un-eroded in key urban sectors.</li>
                     <li style={{ marginBottom: '1.2rem' }}><strong>The Mercury Tactical Advantage (+5%):</strong> Strong Lagna Lord placement during the poll month grants the party a 5% "Narrative Edge" in digital and ground strategy.</li>
                   </>
+                ) : (
+                  <>
+                    <li style={{ marginBottom: '1.2rem' }}><strong>The Saturnian Discipline (+8%):</strong> Strong organizational discipline prevents vote leakage in traditional strongholds.</li>
+                    <li style={{ marginBottom: '1.2rem' }}><strong>The Jupiter Aspect (+5%):</strong> Transiting Jupiter provides a protective gaze on the leadership, ensuring survival in narrow contests.</li>
+                    <li style={{ marginBottom: '1.2rem' }}><strong>The Cadre Multiplier (+2%):</strong> Last-mile booth management powered by intense ideological commitment.</li>
+                  </>
                 )}
              </ul>
              <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: `1px dashed ${selectedState === 'tamilnadu' ? 'rgba(255, 107, 107, 0.3)' : 'rgba(81, 207, 102, 0.3)'}`, fontWeight: 'bold', color: selectedState === 'tamilnadu' ? '#ff6b6b' : '#51cf66', fontSize: '1.3rem' }}>
-               Total {selectedState === 'tamilnadu' ? 'Friction: -25% | Final Range: 95 - 105' : 'Resilience: +20% | Final Range: 145 - 155'} Seats.
+               Total {selectedState === 'tamilnadu' ? 'Friction: -25%' : selectedState === 'westbengal' ? 'Resilience: +20%' : 'Persistence: +15%'} | Final Range: {selectedState === 'tamilnadu' ? '95 - 105' : selectedState === 'westbengal' ? '145 - 155' : '75 - 85'} Seats.
              </div>
           </div>
         </div>
@@ -1128,7 +1338,9 @@ const ElectionAnalysis: React.FC = () => {
           <p style={{ lineHeight: '1.8', color: '#F8F9FA', fontSize: '1.45rem', fontWeight: 500 }}>
             {selectedState === 'tamilnadu' 
               ? 'The 2026 Tamil Nadu Election is fundamentally an anti-establishment, chaotic disruption, mediated by heavily fragmented voting.'
-              : 'The 2026 West Bengal Election is a Titan\'s Clash between incumbency resilience and a ferocious challenger wave, defined by intense emotional polarization.'}
+              : selectedState === 'westbengal'
+              ? 'The 2026 West Bengal Election is a Titan\'s Clash between incumbency resilience and a ferocious challenger wave, defined by intense emotional polarization.'
+              : 'The 2026 Kerala Election is a high-stakes battle of attrition where organizational discipline clashes with an aggressive challenger wave, testing the limits of bipolarity.'}
           </p>
         </div>
 
@@ -1137,16 +1349,20 @@ const ElectionAnalysis: React.FC = () => {
           <p style={{ lineHeight: '1.8', color: '#F8F9FA', fontSize: '1.4rem', fontWeight: 500 }}>
             {selectedState === 'tamilnadu' 
               ? 'April 23 favors TVK and AIADMK (anti-establishment wave). May 4 brings "Labha Shani" results for EPS, triggering an Oath of Office, while the Ketu-Janma influence forces the DMK into strategic withdrawal as the opposition.'
-              : 'April 23 and 29 phases show intense planetary friction. May 4 results day highlights "Gaja-Kesari" protection for the incumbent but significant "Labha Shani" breakthroughs for the challenger in urban zones.'}
+              : selectedState === 'westbengal'
+              ? 'April 23 and 29 phases show intense planetary friction. May 4 results day highlights "Gaja-Kesari" protection for the incumbent but significant "Labha Shani" breakthroughs for the challenger in urban zones.'
+              : 'April 9 poll phase showed intense localized competition. May 4 results day highlights "Saturnian Persistence" for the incumbent but significant "Jupiterian Bhagya" breakthroughs for the challenger in key urban zones.'}
           </p>
         </div>
 
         <div className="pdf-section glass-panel" style={{ padding: '2.5rem 3.5rem', marginBottom: '1rem', background: 'var(--color-navy)' }}>
-          <h4 style={{ fontSize: '1.7rem', color: '#fcc419', marginBottom: '1rem' }}>Astrological Seat Projection (Total: {selectedState === 'tamilnadu' ? '234' : '294'})</h4>
+          <h4 style={{ fontSize: '1.7rem', color: '#fcc419', marginBottom: '1rem' }}>Astrological Seat Projection (Total: {selectedState === 'tamilnadu' ? '234' : selectedState === 'westbengal' ? '294' : '140'})</h4>
           <p style={{ lineHeight: '1.8', color: '#F8F9FA', fontSize: '1.4rem', fontWeight: 500 }}>
             {selectedState === 'tamilnadu'
               ? 'The disruption caused by Rahu in Aquarius and TVK\'s Janma Rasi Voting Day Transit ensures a brutally fractured vote.'
-              : 'The "Resilience Factor" of the Taurus Moon incumbent vs the "Breakthrough Karma" of the Gemini Rasi challenger ensures a high-voltage, narrow-margin outcome.'}
+              : selectedState === 'westbengal'
+              ? 'The "Resilience Factor" of the Taurus Moon incumbent vs the "Breakthrough Karma" of the Gemini Rasi challenger ensures a high-voltage, narrow-margin outcome.'
+              : 'The "Persistence Factor" of the Leo Lagna incumbent vs the "Sade Sati" challenges of the Aquarius Rasi challenger ensures a high-intensity, disciplined outcome.'}
           </p>
         </div>
 
@@ -1203,7 +1419,7 @@ const ElectionAnalysis: React.FC = () => {
                 </div>
             </div>
           </>
-        ) : (
+        ) : selectedState === 'westbengal' ? (
           <>
             <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #2e7d32' }}>
@@ -1245,7 +1461,49 @@ const ElectionAnalysis: React.FC = () => {
                 </div>
             </div>
           </>
-        )}
+        ) : selectedState === 'kerala' ? (
+          <>
+            <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
+                <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #d32f2f' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <strong style={{ fontSize: '1.4rem', color: '#d32f2f' }}>LDF / CPI(M) Alliance (75 - 85 Seats)</strong>
+                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#d32f2f' }}>Proj. Vote Share: ~43.5%</span>
+                  </div>
+                  <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Retains Power. Saturnian persistence and unmatched organizational discipline ensure a historic consecutive term.</p>
+                </div>
+            </div>
+
+            <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
+                <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #00b0ff' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <strong style={{ fontSize: '1.4rem', color: '#00b0ff' }}>UDF / Congress Alliance (55 - 65 Seats)</strong>
+                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#00b0ff' }}>Proj. Vote Share: ~39.0%</span>
+                  </div>
+                  <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Strong Opposition. Sade Sati Peak for leadership limits seat conversion despite a significant urban resonance.</p>
+                </div>
+            </div>
+
+            <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
+                <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #ff9933' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <strong style={{ fontSize: '1.4rem', color: '#ff9933' }}>NDA / BJP (0 - 2 Seats)</strong>
+                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#ff9933' }}>Proj. Vote Share: ~15.5%</span>
+                  </div>
+                  <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Growth Surge. High visibility and ideological breakthrough in urban pockets fail to bypass the bipolar mathematical barrier.</p>
+                </div>
+            </div>
+
+            <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem 4rem 3.5rem', borderRadius: '0 0 20px 20px', background: 'var(--color-navy)' }}>
+                <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #adb5bd' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <strong style={{ fontSize: '1.4rem', color: '#adb5bd' }}>Others / Independents (0 - 1 Seats)</strong>
+                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#adb5bd' }}>Proj. Vote Share: ~2.0%</span>
+                  </div>
+                  <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Extreme Polarization. Independent voices squeezed by the intense binary contest across most districts.</p>
+                </div>
+            </div>
+          </>
+        ) : null}
 
         <div className="pdf-section glass-panel" style={{ marginTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)', padding: '3rem 2rem', textAlign: 'center', background: 'var(--color-navy)' }}>
           <div style={{ padding: '2rem', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '2rem' }}>
