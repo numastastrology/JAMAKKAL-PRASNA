@@ -98,6 +98,57 @@ class SynthesisEngine:
         q_time = _dt.datetime.fromisoformat(self.jam.get("query_time")) if self.jam.get("query_time") else _dt.datetime.now()
         self.obs.date = (q_time - _dt.timedelta(hours=5, minutes=30)).strftime('%Y/%m/%d %H:%M:%S')
         
+        # Load Party Data
+        self.party_data = self._load_party_data()
+
+    def _load_party_data(self):
+        import json
+        try:
+            path = os.path.join(os.path.dirname(__file__), "..", "parties.json")
+            if os.path.exists(path):
+                with open(path, "r") as f:
+                    return json.load(f)
+        except Exception:
+            pass
+        return []
+
+    def _calculate_party_strength(self, party_id: str, event_time: _dt.datetime = None):
+        """Calculates the strength of a political party based on its formation date."""
+        party = next((p for p in self.party_data if p["id"] == party_id), None)
+        if not party: return 0
+        
+        from engines.jamakkal import JamakkalEngine
+        f_dt = _dt.datetime.fromisoformat(f"{party['formation_date']}T{party['formation_time']}")
+        f_engine = JamakkalEngine(party["lat"], party["lon"], f_dt)
+        f_data = f_engine.compute_all()
+        
+        f_udayam = self._extract_rasi(f_data['inner_planets']['Udayam'])
+        
+        # Check current transits against Party Udayam
+        score = 50 # Base strength
+        
+        # Jupiter in Udayam or 5/9 from Udayam
+        jup_pos = self.positions.get("Jupiter", 1)
+        jup_house = self._get_house_num(jup_pos, f_udayam)
+        if jup_house == 1: score += 30 # Mass victory indicator
+        elif jup_house in [5, 9]: score += 15
+        
+        # Saturn/Mars in 12/8 from Udayam
+        sat_pos = self.positions.get("Saturn", 1)
+        sat_house = self._get_house_num(sat_pos, f_udayam)
+        if sat_house == 12: score -= 20 # Loss of power/Heavy expenses
+        elif sat_house == 8: score -= 15 # Ashtama Shani - extreme friction
+        
+        # Sun in Udayam (Solar Return)
+        sun_pos = self.positions.get("Sun", 1)
+        if sun_pos == f_udayam: score += 20 # Rejuvenation/Wave
+        
+        # Moon in 8th (Ashtama Chandra) on Result Day
+        moon_pos = self.positions.get("Moon", 1)
+        if self._get_house_num(moon_pos, f_udayam) == 8: score -= 25 # Emotional/Public backlash
+        
+        return max(0, min(100, score))
+        
         self.house_lords = {
             1: "Mars", 2: "Venus", 3: "Mercury", 4: "Moon",
             5: "Sun", 6: "Mercury", 7: "Venus", 8: "Mars",

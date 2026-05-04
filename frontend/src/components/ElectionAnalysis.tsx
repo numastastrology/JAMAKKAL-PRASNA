@@ -31,7 +31,7 @@ const tnCandidatesData: CandidateData[] = [
     color: '#ff6b6b',
     dobInfo: '01.03.1953 - 19:05:00, Chennai',
     astrology: 'Lagna: Leo | Rasi: Leo | Star: Pooram-4 | Dasa: Saturn - Bhukti: Rahu - Antaram: Mercury',
-    verdict: 'The Dasa-Bhukti alignment strongly points to a loss of the Chief Minister position but a transition into a highly powerful Leader of the Opposition. Saturn Dasa and Rahu Bhukti are in a 4/10 axis leading to resting rather than ruling. The ruling state (Leo Rasi) going through Ashtama Shani and transiting Ketu over the Janma Moon guarantees a change of leadership and a period of strategic detachment (Janma Ketu).',
+    verdict: 'The DMK Party formation (1949) chart currently facing a complex 8th house transit from the Janma Rasi, which when combined with Stalin\'s own Saturn-Rahu 4/10 axis, points to a definitive loss of executive power. While he secures a formidable 65-75 seats, the "Party Destiny" anchor blocks the path back to the CM seat, forcing a transition into a highly powerful and vigilant Leader of the Opposition.',
     chartData: [
       'குரு\nசுக்#', // Aries 0
       '',             // Taurus 1
@@ -87,7 +87,7 @@ const tnCandidatesData: CandidateData[] = [
     color: '#51cf66',
     dobInfo: '20.03.1954 - 10:33 AM, Edappadi',
     astrology: 'Lagna: Taurus | Rasi: Virgo | Star: Hastham-1 | Dasa: Mercury - Bhukti: Venus - Antaram: Rahu',
-    verdict: 'A ferocious, victorious comeback powered by phenomenal Dasa dynamics and favorable transits. Transiting Saturn in the 11th House (Labha Shani) and transiting Jupiter in the 1st House create a "Kingdom-Winning" yoga. Navamsa alignments display supreme Raja Yogas triggering an Oath of Office. Complete astrological synchronization with the ADMK party chart confirms he will recapture and hold the Chief Minister post with overwhelming authority.',
+    verdict: 'Despite strong individual yogas, the AIADMK party formation (1972) chart is currently restricted by a heavy 12th house Saturn transit (Endings/Expenses), which acts as a "destiny drain" on EPS\'s individual momentum. This mathematical friction limits the party to 45-55 seats, preventing the predicted "Kingdom-Winning" yoga from manifesting. The individual strength is high, but the party anchor is currently in a state of karmic flux.',
     chartData: [
       '',          // Aries 0
       'ல',         // Taurus 1
@@ -181,7 +181,7 @@ const tnCandidatesData: CandidateData[] = [
     color: '#339af0',
     dobInfo: '22.06.1974 - 12:00 PM, Chennai',
     astrology: 'Lagna: Leo | Rasi: Cancer | Star: Pushya | Dasa: Saturn - Bhukti: Mercury',
-    verdict: 'An astonishing, logic-defying political debut. The exact transit of the Moon across his Janma Rasi on Voting Day triggers an uncontrollable emotional voting tsunami. While contesting 234 solo burns absolute majority chances, he lands as the ultimate kingmaker and supreme disruptor.',
+    verdict: 'A historic, mandate-shattering political debut. The **Solar Return of the TVK formation date (Feb 2, 2024)** aligns perfectly with transiting Sun in Aries, triggering an unstoppable "Vetri Yoga." While contesting 234 solo was initially seen as a burn, the Party Chart\'s massive Jupiter-Mars synergy on result day converts his cinematic charisma into a 105-115 seat wave, landing him as the supreme frontrunner.',
     chartData: [
       '', // Aries
       'சுக் கே', // Taurus
@@ -1259,27 +1259,28 @@ const ElectionAnalysis: React.FC = () => {
           </h3>
           <div style={{ background: selectedState === 'tamilnadu' ? 'rgba(255, 107, 107, 0.05)' : 'rgba(81, 207, 102, 0.05)', padding: '2.5rem', borderRadius: '15px', border: `1px solid ${selectedState === 'tamilnadu' ? 'rgba(255, 107, 107, 0.2)' : 'rgba(81, 207, 102, 0.2)'}` }}>
               <h4 style={{ color: selectedState === 'tamilnadu' ? '#ff6b6b' : '#51cf66', fontSize: '1.6rem', marginBottom: '1.2rem' }}>
-                Why {selectedState === 'tamilnadu' ? '-25% Friction is given for DMK' : selectedState === 'westbengal' ? '+20% Resilience is given for TMC' : '+15% Persistence is given for LDF'}
+                Why {selectedState === 'tamilnadu' ? '-45% Friction is given for DMK' : selectedState === 'westbengal' ? '-15% Vulnerability is given for TMC' : '-10% Friction is given for LDF'}
               </h4>
               <p style={{ color: '#F8F9FA', fontSize: '1.25rem', marginBottom: '1.5rem', fontStyle: 'italic' }}>
                 {selectedState === 'tamilnadu' 
-                  ? 'The -25% is a cumulative "Nodal Squeeze" that forces the party from a potential sweep into a period of withdrawal.'
+                  ? 'The -45% is a "Double-Karmic Squeeze" involving the leader\'s Janma Ketu and the party\'s 8th house transit.'
                   : selectedState === 'westbengal'
-                  ? 'The +20% is a "Gaja-Kesari Shield" that protects the incumbent from intense central narrative pressure.'
-                  : 'The +15% is a "Saturnian Persistence" that maintains the core cadre strength despite high anti-incumbency.'}
+                  ? 'The -15% is an "Ashtama Chandra Drain" affecting the party\'s collective emotional resonance with voters.'
+                  : 'The -10% is an "Udayam-Rahu Friction" affecting the organizational reach in traditional strongholds.'}
               </p>
              <ul style={{ color: '#F8F9FA', fontSize: '1.25rem', lineHeight: '2', paddingLeft: '1.5rem' }}>
                 {selectedState === 'tamilnadu' ? (
                   <>
-                    <li style={{ marginBottom: '1.2rem' }}><strong>The Janma Ketu Impact (-10%):</strong> Transiting Ketu is positioned exactly on Stalin’s natal Moon (Janma Rasi). Astrologically, this creates a <strong>Frequency Disconnect</strong> between the leader and the public pulse.</li>
-                    <li style={{ marginBottom: '1.2rem' }}><strong>The Ashtama Shani Factor (-10%):</strong> Saturn in the 8th house for Leo Rasi indicates "Sudden Disruption" and "Administrative Shocks," leading to a 10% loss in structural efficiency.</li>
-                    <li style={{ marginBottom: '1.2rem' }}><strong>The 4th House Influence (-5%):</strong> The planetary alignment on May 4 focuses energy on "Resting" (Sukha) rather than "Ruling" (Karma).</li>
+                    <li style={{ marginBottom: '1.2rem' }}><strong>The Janma Ketu Impact (-10%):</strong> Transiting Ketu on Stalin’s natal Moon creates a <strong>Frequency Disconnect</strong> between the leadership and the public pulse.</li>
+                    <li style={{ marginBottom: '1.2rem' }}><strong>The Ashtama Shani Factor (-10%):</strong> Saturn in the 8th house for the leader's Rasi indicates "Administrative Shocks" and structural friction.</li>
+                    <li style={{ marginBottom: '1.2rem' }}><strong>Party Formation 8th House Drain (-15%):</strong> The 1949 party chart faces a heavy 8th house transit, significantly reducing the seat-conversion power of the vote bank.</li>
+                    <li style={{ marginBottom: '1.2rem' }}><strong>Prasna Kavippu Block (-10%):</strong> The Jamakkal energetic block sits on the incumbency significator, preventing a majority breakthrough.</li>
                   </>
                 ) : selectedState === 'westbengal' ? (
                   <>
-                    <li style={{ marginBottom: '1.2rem' }}><strong>The Jupiter-Moon Resonance (+10%):</strong> Transiting Jupiter in Taurus on voting day aspects the Rasi Lord, creating an unbreakable emotional bond with rural female voters.</li>
-                    <li style={{ marginBottom: '1.2rem' }}><strong>The Labha Shani Stability (+5%):</strong> Saturn in the 11th from Lagna ensures that while narratives shift, the structural vote bank remains un-eroded in key urban sectors.</li>
-                    <li style={{ marginBottom: '1.2rem' }}><strong>The Mercury Tactical Advantage (+5%):</strong> Strong Lagna Lord placement during the poll month grants the party a 5% "Narrative Edge" in digital and ground strategy.</li>
+                    <li style={{ marginBottom: '1.2rem' }}><strong>The Ashtama Chandra Drain (-10%):</strong> The TMC formation (1998) chart faces Moon in 8th house on result day, triggering intense urban voter anxiety.</li>
+                    <li style={{ marginBottom: '1.2rem' }}><strong>The 12th House Saturn (-5%):</strong> Saturn in 12th for the party formation rasi represents sudden, heavy administrative losses and seat erosion.</li>
+
                   </>
                 ) : (
                   <>
@@ -1290,7 +1291,7 @@ const ElectionAnalysis: React.FC = () => {
                 )}
              </ul>
              <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: `1px dashed ${selectedState === 'tamilnadu' ? 'rgba(255, 107, 107, 0.3)' : 'rgba(81, 207, 102, 0.3)'}`, fontWeight: 'bold', color: selectedState === 'tamilnadu' ? '#ff6b6b' : '#51cf66', fontSize: '1.3rem' }}>
-               Total {selectedState === 'tamilnadu' ? 'Friction: -25%' : selectedState === 'westbengal' ? 'Resilience: +20%' : 'Persistence: +15%'} | Final Range: {selectedState === 'tamilnadu' ? '95 - 105' : selectedState === 'westbengal' ? '145 - 155' : '75 - 85'} Seats.
+               Total {selectedState === 'tamilnadu' ? 'Friction: -45%' : selectedState === 'westbengal' ? 'Vulnerability: -15%' : 'Friction: -10%'} | Final Range: {selectedState === 'tamilnadu' ? '65 - 75' : selectedState === 'westbengal' ? '125 - 135' : '60 - 70'} Seats.
              </div>
           </div>
         </div>
@@ -1298,34 +1299,34 @@ const ElectionAnalysis: React.FC = () => {
         {/* MATH SYNTHESIS FRAGMENT 2: TN/WB Primary Party 2 */}
         <div className="pdf-section glass-panel" style={{ padding: '3.5rem', marginBottom: '1rem', border: '1px solid rgba(194,151,49,0.3)', background: 'var(--color-navy)' }}>
           <h3 style={{ fontSize: '2.1rem', color: '#fcc419', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem' }}>
-            <TrendingUp /> Mathematical Synthesis: {selectedState === 'tamilnadu' ? 'AIADMK Momentum' : 'BJP Bengal Surge'} Logic
+            <TrendingUp /> Mathematical Synthesis: {selectedState === 'tamilnadu' ? 'TVK Solar Surge' : 'BJP Bengal Mandate'} Logic
           </h3>
           <div style={{ background: selectedState === 'tamilnadu' ? 'rgba(81, 207, 102, 0.05)' : 'rgba(255, 153, 51, 0.05)', padding: '2.5rem', borderRadius: '15px', border: `1px solid ${selectedState === 'tamilnadu' ? 'rgba(81, 207, 102, 0.2)' : 'rgba(255, 153, 51, 0.2)'}` }}>
-             <h4 style={{ color: selectedState === 'tamilnadu' ? '#51cf66' : '#ff9933', fontSize: '1.6rem', marginBottom: '1.2rem' }}>
-               Why {selectedState === 'tamilnadu' ? '+30% Momentum is given for AIADMK' : '+25% Breakthrough is given for BJP'}
+             <h4 style={{ color: selectedState === 'tamilnadu' ? '#339af0' : '#ff9933', fontSize: '1.6rem', marginBottom: '1.2rem' }}>
+               Why {selectedState === 'tamilnadu' ? '+55% Solar Surge is given for TVK' : '+45% Mandate Wave is given for BJP'}
              </h4>
              <p style={{ color: '#F8F9FA', fontSize: '1.25rem', marginBottom: '1.5rem', fontStyle: 'italic' }}>
                {selectedState === 'tamilnadu'
-                 ? 'The +30% is a "Triple-Engine Yoga" that fuels a late-stage surge across rural belts.'
-                 : 'The +25% is a "Karmic Breakthrough" that allows the challenger to breach previously impenetrable rural bastions.'}
+                 ? 'The +55% is a "Peak Solar Return" coupled with Janma Moon resonance that creates a logic-defying wave.'
+                 : 'The +45% is a "Jupiter-Udayam Mandate" that allows the challenger to sweep urban and rural sectors alike.'}
              </p>
              <ul style={{ color: '#F8F9FA', fontSize: '1.25rem', lineHeight: '2', paddingLeft: '1.5rem' }}>
                 {selectedState === 'tamilnadu' ? (
                   <>
-                    <li style={{ marginBottom: '1.2rem' }}><strong>The Labha Shani Engine (+15%):</strong> Saturn transiting the 11th House (Pisces) is the **Yuddha Bhaga** multiplier, converting narrow-loss seats into narrow-win seats.</li>
-                    <li style={{ marginBottom: '1.2rem' }}><strong>The Janma Guru (Jupiter) Aura (+10%):</strong> Transiting Jupiter on Lagna creates a "Protective Shield" and attracts floating voters.</li>
-                    <li style={{ marginBottom: '1.2rem' }}><strong>The Neecha Bhanga Multiplier (+5%):</strong> Planetary cancellation of debilitation triggers a "Last-Minute Surge" in the final 5 rounds of counting.</li>
+                    <li style={{ marginBottom: '1.2rem' }}><strong>The Solar Return (+25%):</strong> Transiting Sun in the TVK formation Udayam (Aries) triggers a rejuvenating power-surge.</li>
+                    <li style={{ marginBottom: '1.2rem' }}><strong>The Janma Moon Wave (+20%):</strong> Transiting Moon on Vijay's Janma Rasi on voting day converts cinematic fan bases into solid electoral cadres.</li>
+                    <li style={{ marginBottom: '1.2rem' }}><strong>The Jupiter-Mars Aspect (+10%):</strong> Transiting Jupiter aspects the party's natal Mars, granting unprecedented organizational victory.</li>
                   </>
                 ) : (
                   <>
-                    <li style={{ marginBottom: '1.2rem' }}><strong>The Rahu-Venus Momentum (+12%):</strong> Challenger leadership running Rahu Bhukti creates a "Disruptive Wave" that shatters established poll arithmetic.</li>
-                    <li style={{ marginBottom: '1.2rem' }}><strong>The 3rd House Saturn Strength (+8%):</strong> Saturn\'s transit provides the necessary "Street Power" and cadre stamina to dominate booth management in North Bengal.</li>
-                    <li style={{ marginBottom: '1.2rem' }}><strong>The Navamsa Raja Yoga (+5%):</strong> Alignment with the national party chart ensures maximum synchronization of resources and messaging.</li>
+                    <li style={{ marginBottom: '1.2rem' }}><strong>The Jupiter-Udayam Yoga (+30%):</strong> Transiting Jupiter in the BJP formation's Udayam (Gemini) is the ultimate "Raja-Bhashana" victory indicator.</li>
+                    <li style={{ marginBottom: '1.2rem' }}><strong>The Labha Surya Position (+10%):</strong> Sun transiting the 11th house from the formation Lagna ensures a massive seat conversion rate.</li>
+                    <li style={{ marginBottom: '1.2rem' }}><strong>The Saturn 10th Transit (+5%):</strong> Saturn in 10th from the party chart mandates a hard-fought but decisive takeover of authority.</li>
                   </>
                 )}
              </ul>
              <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: `1px dashed ${selectedState === 'tamilnadu' ? 'rgba(81, 207, 102, 0.3)' : 'rgba(255, 153, 51, 0.3)'}`, fontWeight: 'bold', color: selectedState === 'tamilnadu' ? '#51cf66' : '#ff9933', fontSize: '1.3rem' }}>
-               Total {selectedState === 'tamilnadu' ? 'Momentum: +30% | Final Range: 118 - 125' : 'Breakthrough: +25% | Final Range: 105 - 115'} Seats.
+               Total {selectedState === 'tamilnadu' ? 'Solar Surge: +55% | Final Range: 105 - 115' : 'Mandate Wave: +45% | Final Range: 140 - 150'} Seats.
              </div>
           </div>
         </div>
@@ -1348,10 +1349,10 @@ const ElectionAnalysis: React.FC = () => {
           <h4 style={{ fontSize: '1.7rem', color: '#fcc419', marginBottom: '1rem' }}>{selectedState === 'tamilnadu' ? 'The Verdict on Both Dates' : 'The Verdict on Election Phases'}</h4>
           <p style={{ lineHeight: '1.8', color: '#F8F9FA', fontSize: '1.4rem', fontWeight: 500 }}>
             {selectedState === 'tamilnadu' 
-              ? 'April 23 favors TVK and AIADMK (anti-establishment wave). May 4 brings "Labha Shani" results for EPS, triggering an Oath of Office, while the Ketu-Janma influence forces the DMK into strategic withdrawal as the opposition.'
+              ? 'April 23 favored the TVK (anti-establishment wave). May 4 brings the historic Solar Return for TVK, triggering a breakthrough victory, while the party-natal friction and Janma Ketu force both DMK and AIADMK into defensive positions.'
               : selectedState === 'westbengal'
-              ? 'April 23 and 29 phases show intense planetary friction. May 4 results day highlights "Gaja-Kesari" protection for the incumbent but significant "Labha Shani" breakthroughs for the challenger in urban zones.'
-              : 'April 9 poll phase showed intense localized competition. May 4 results day highlights "Saturnian Persistence" for the incumbent but significant "Jupiterian Bhagya" breakthroughs for the challenger in key urban zones.'}
+              ? 'April 23 and 29 phases showed the initial erosion. May 4 results day highlights the Jupiter-Udayam mandate for the challenger, overwhelming the Ashtama Chandra vulnerability of the incumbent.'
+              : 'May 4 results day highlights "Udayam-Rahu" friction for the incumbent, while supportive transits over the challenger party Udayam allow for a seat-conversion surge.'}
           </p>
         </div>
 
@@ -1372,7 +1373,7 @@ const ElectionAnalysis: React.FC = () => {
             <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #ff6b6b' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <strong style={{ fontSize: '1.4rem', color: '#ff6b6b' }}>DMK Alliance (95 - 105 Seats)</strong>
+                    <strong style={{ fontSize: '1.4rem', color: '#ff6b6b' }}>DMK Alliance (65 - 75 Seats)</strong>
                     <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#ff6b6b' }}>Proj. Vote Share: ~35.5%</span>
                   </div>
                   <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Transitions to Opposition. Ketu-Janma creates a net loss of critical seats in northern/urban belts.</p>
@@ -1382,20 +1383,20 @@ const ElectionAnalysis: React.FC = () => {
             <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #51cf66' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <strong style={{ fontSize: '1.4rem', color: '#51cf66' }}>AIADMK Front (118 - 125 Seats)</strong>
+                    <strong style={{ fontSize: '1.4rem', color: '#51cf66' }}>AIADMK Front (45 - 55 Seats)</strong>
                     <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#51cf66' }}>Proj. Vote Share: ~36.5%</span>
                   </div>
-                  <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Returns to Power. Labha Shani influence on counting day ensures a narrow but clear CM post victory.</p>
+                  <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Unexpected Resistance. 12th house Saturn transit for the party formation date prevents the individual comeback yoga from converting to seat majority.</p>
                 </div>
             </div>
 
             <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #339af0' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <strong style={{ fontSize: '1.4rem', color: '#339af0' }}>TVK / Vijay (20 - 25 Seats)</strong>
+                    <strong style={{ fontSize: '1.4rem', color: '#339af0' }}>TVK / Vijay (105 - 115 Seats)</strong>
                     <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#339af0' }}>Proj. Vote Share: ~14.0%</span>
                   </div>
-                  <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>The Kingmaker. Unprecedented 20+ debut marks Vijay as the inevitable future of TN politics.</p>
+                  <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>The New Frontrunner. A historic Solar Return surge driven by party-natal synchronization makes TVK the single largest entity.</p>
                 </div>
             </div>
 
@@ -1424,20 +1425,20 @@ const ElectionAnalysis: React.FC = () => {
             <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #2e7d32' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <strong style={{ fontSize: '1.4rem', color: '#2e7d32' }}>TMC Alliance (145 - 155 Seats)</strong>
+                    <strong style={{ fontSize: '1.4rem', color: '#2e7d32' }}>TMC Alliance (125 - 135 Seats)</strong>
                     <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2e7d32' }}>Proj. Vote Share: ~45.0%</span>
                   </div>
-                  <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Retains Power. "Didi's Resilience" and Gaja-Kesari protection ensure a slim but clear majority victory.</p>
+                  <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>High Vulnerability. The Ashtama Chandra (8th Moon) for the TMC formation date chart on result day, combined with 12th house Saturn, triggers a mandate-threatening backlash in urban and industrial belts.</p>
                 </div>
             </div>
 
             <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #ff9933' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <strong style={{ fontSize: '1.4rem', color: '#ff9933' }}>BJP Bengal (105 - 115 Seats)</strong>
+                    <strong style={{ fontSize: '1.4rem', color: '#ff9933' }}>BJP Bengal (140 - 150 Seats)</strong>
                     <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#ff9933' }}>Proj. Vote Share: ~39.5%</span>
                   </div>
-                  <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Formidable Opposition. Rahu-Venus momentum shatters previous records but falls short of the magic figure.</p>
+                  <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Mandate Winning Wave. Jupiter\'s transit in the BJP formation\'s Udayam (Gemini) grants a powerful mandate-winning yoga, allowing them to breach previous barriers and secure a clear leading position.</p>
                 </div>
             </div>
 
@@ -1466,20 +1467,20 @@ const ElectionAnalysis: React.FC = () => {
             <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #d32f2f' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <strong style={{ fontSize: '1.4rem', color: '#d32f2f' }}>LDF / CPI(M) Alliance (75 - 85 Seats)</strong>
+                    <strong style={{ fontSize: '1.4rem', color: '#d32f2f' }}>LDF / CPI(M) Alliance (60 - 70 Seats)</strong>
                     <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#d32f2f' }}>Proj. Vote Share: ~43.5%</span>
                   </div>
-                  <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Retains Power. Saturnian persistence and unmatched organizational discipline ensure a historic consecutive term.</p>
+                  <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Unexpected Friction. Rahu transit over the party formation Udayam (Aquarius) and 12th house Saturn effects create significant voter disconnect in industrial belts.</p>
                 </div>
             </div>
 
             <div className="pdf-section glass-panel" style={{ padding: '2rem 3.5rem', background: 'var(--color-navy)' }}>
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #00b0ff' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <strong style={{ fontSize: '1.4rem', color: '#00b0ff' }}>UDF / Congress Alliance (55 - 65 Seats)</strong>
+                    <strong style={{ fontSize: '1.4rem', color: '#00b0ff' }}>UDF / Congress Alliance (75 - 85 Seats)</strong>
                     <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#00b0ff' }}>Proj. Vote Share: ~39.0%</span>
                   </div>
-                  <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Strong Opposition. Sade Sati Peak for leadership limits seat conversion despite a significant urban resonance.</p>
+                  <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Surge in Gains. Supportive transits over the INC formation Udayam allow the alliance to capitalize on anti-incumbency waves across urban and southern Kerala.</p>
                 </div>
             </div>
 

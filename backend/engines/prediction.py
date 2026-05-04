@@ -65,6 +65,33 @@ class PredictionEngine:
             return "COMPETITION"
         return "GENERAL"
 
+    def _evaluate_election_party_strength(self):
+        """Calculates and returns a narrative about party-level strength if mentioned in query."""
+        if not any(w in self.query_text for w in ["election", "vote", "party", "seat", "dmk", "aiadmk", "tvk", "tmc", "bjp", "inc", "cpim"]):
+            return ""
+        
+        # Load parties
+        import json, os
+        parties = []
+        try:
+            path = os.path.join(os.path.dirname(__file__), "..", "parties.json")
+            with open(path, "r") as f:
+                parties = json.load(f)
+        except: pass
+        
+        results = []
+        for p in parties:
+            if p["id"] in self.query_text or p["name"].lower() in self.query_text or (p["id"] == "aiadmk" and "admk" in self.query_text):
+                # Use the synthesis engine to calculate party strength
+                from engines.synthesis import SynthesisEngine
+                s_engine = SynthesisEngine(self.jam)
+                strength = s_engine._calculate_party_strength(p["id"])
+                
+                status = "Dominant" if strength > 75 else "Formidable" if strength > 60 else "Vulnerable" if strength < 40 else "Competitive"
+                results.append(f"<b>{p['name']} Formation Chart:</b> Strength {strength:.1f}% ({status}). {('Positive Solar/Jupiter alignment' if strength > 60 else 'Ashtama/Dusthana pressure identified')}.")
+        
+        return "<br/>" + "<br/>".join(results) if results else ""
+
     def _has_natal(self) -> bool:
         """Returns True if natal birth data is available (Mode 2)."""
         return bool(self.natal and self.natal.get("Lagna"))
@@ -398,6 +425,23 @@ class PredictionEngine:
             add_pt(challenges, f"Jupiter (wisdom/guru) in {jup_rasi} ({jup_status}) — {'strong learning absorption and teacher support' if 'Own' in jup_status or 'Exalted' in jup_status else 'conceptual clarity needs extra effort'}.")
             add_pt(challenges, f"Moon in {moon.get('rasi', '')} ({moon.get('nakshatra', '')}) — {'stable focus and emotional balance for study' if 'Friendly' in moon.get('status', '') else 'distractions from emotional/personal matters'}.")
             add_pt(challenges, f"Kavippu in {kav_rasi} ({ud_rel}H) — {'minor disruption' if ud_rel in [3,6,11] else 'learning block due to stress or environment'} currently present.")
+
+        elif category == "Elections & Competition":
+            mars = self._get_planet_data("Mars")
+            saturn = self._get_planet_data("Saturn")
+            jupiter = self._get_planet_data("Jupiter")
+            
+            add_pt(challenges, f"Mars (Offensive power) in {mars.get('rasi')} ({mars.get('status')}) — {'strong offensive capability' if 'Exalted' in mars.get('status') or 'Own' in mars.get('status') else 'strategic caution required'}.")
+            add_pt(challenges, f"Jupiter (Mass support/Blessing) in {jupiter.get('rasi')} — {'strong public mandate support' if jupiter.get('rasi_num') in [1, 5, 9, 11] else 'mandate relies on coalition/alliances'}.")
+            add_pt(challenges, f"Saturn (Justice/The People) in {saturn.get('rasi')} — {'stable ground-level support' if 'Own' in saturn.get('status') else 'voter friction or logistical delays in booths'}.")
+            
+            p_strength = self._evaluate_election_party_strength()
+            if p_strength:
+                add_pt(challenges, f"Party Analytics: {p_strength.replace('<b>', '').replace('</b>', '')}")
+            
+            add_pt(remedies, "Perform key campaign activities during Mars or Jupiter Hora for maximum resonance.")
+            add_pt(remedies, "Worship Lord Hanuman (Mars) and Lord Ganesha to remove tactical obstacles.")
+            add_pt(remedies, "Coordinate booth-level activities based on local transit Moon nakshatras.")
             add_pt(challenges, f"Arudam in {ar_rasi} ({ar_rel}H) — {'education goals will be achieved' if ar_rel in [1,4,5,9] else 'additional effort needed to reach desired academic outcome'}.")
             
             add_pt(remedies, f"Study facing the direction of Mercury's current energy — Mercury in {merc_nak}; facing East/North is ideal.")
@@ -932,9 +976,11 @@ class PredictionEngine:
             )
         elif self.intent == "COMPETITION":
             favour = "positive with strong winning potential" if kav_rel in [5, 9, 11] else "requiring strategic persistence"
+            party_info = self._evaluate_election_party_strength()
             final = (
                 f'The Jamakkal Prasna analysis regarding "{query_ctx}" indicates the outcome is {favour}.{diag_injection} '
                 f"The ruling planet {self.ruling_planet} shifting to {next_rasi} ({transit_date}) marks the key moment for the win."
+                f"{party_info}"
                 f"{br}{br}"
                 f"<b>Outcome Forecast:</b>{br}"
                 f"{bull} <b>FRUITION WINDOW: {fruition_window_str}</b> — competitive edge and victory manifest here.{br}"

@@ -1,0 +1,65 @@
+[
+  {
+    "id": "dmk",
+    "name": "DMK",
+    "formation_date": "1949-09-17",
+    "formation_time": "12:00:00",
+    "formation_place": "Chennai",
+    "lat": 13.08,
+    "lon": 80.27
+  },
+  {
+    "id": "aiadmk",
+    "name": "AIADMK",
+    "formation_date": "1972-10-17",
+    "formation_time": "12:00:00",
+    "formation_place": "Chennai",
+    "lat": 13.08,
+    "lon": 80.27
+  },
+  {
+    "id": "tvk",
+    "name": "TVK",
+    "formation_date": "2024-02-02",
+    "formation_time": "12:00:00",
+    "formation_place": "Chennai",
+    "lat": 13.08,
+    "lon": 80.27
+  },
+  {
+    "id": "tmc",
+    "name": "AITC (TMC)",
+    "formation_date": "1998-01-01",
+    "formation_time": "12:00:00",
+    "formation_place": "Kolkata",
+    "lat": 22.57,
+    "lon": 88.36
+  },
+  {
+    "id": "bjp",
+    "name": "BJP",
+    "formation_date": "1980-04-06",
+    "formation_time": "12:00:00",
+    "formation_place": "New Delhi",
+    "lat": 28.61,
+    "lon": 77.20
+  },
+  {
+    "id": "cpim",
+    "name": "CPI(M)",
+    "formation_date": "1964-11-07",
+    "formation_time": "12:00:00",
+    "formation_place": "Kolkata",
+    "lat": 22.57,
+    "lon": 88.36
+  },
+  {
+    "id": "inc",
+    "name": "INC",
+    "formation_date": "1885-12-28",
+    "formation_time": "12:00:00",
+    "formation_place": "Mumbai",
+    "lat": 18.92,
+    "lon": 72.83
+  }
+]
