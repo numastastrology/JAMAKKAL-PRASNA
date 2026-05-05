@@ -1384,7 +1384,7 @@ const ElectionAnalysis: React.FC = () => {
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #51cf66' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <strong style={{ fontSize: '1.4rem', color: '#51cf66' }}>AIADMK Front (45 - 55 Seats)</strong>
-                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#51cf66' }}>Proj. Vote Share: ~36.5%</span>
+                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#51cf66' }}>Proj. Vote Share: ~14.0%</span>
                   </div>
                   <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Unexpected Resistance. 12th house Saturn transit for the party formation date prevents the individual comeback yoga from converting to seat majority.</p>
                 </div>
@@ -1394,7 +1394,7 @@ const ElectionAnalysis: React.FC = () => {
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #339af0' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <strong style={{ fontSize: '1.4rem', color: '#339af0' }}>TVK / Vijay (105 - 115 Seats)</strong>
-                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#339af0' }}>Proj. Vote Share: ~14.0%</span>
+                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#339af0' }}>Proj. Vote Share: ~36.5%</span>
                   </div>
                   <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>The New Frontrunner. A historic Solar Return surge driven by party-natal synchronization makes TVK the single largest entity.</p>
                 </div>
@@ -1426,7 +1426,7 @@ const ElectionAnalysis: React.FC = () => {
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #2e7d32' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <strong style={{ fontSize: '1.4rem', color: '#2e7d32' }}>TMC Alliance (125 - 135 Seats)</strong>
-                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2e7d32' }}>Proj. Vote Share: ~45.0%</span>
+                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2e7d32' }}>Proj. Vote Share: ~39.5%</span>
                   </div>
                   <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>High Vulnerability. The Ashtama Chandra (8th Moon) for the TMC formation date chart on result day, combined with 12th house Saturn, triggers a mandate-threatening backlash in urban and industrial belts.</p>
                 </div>
@@ -1436,7 +1436,7 @@ const ElectionAnalysis: React.FC = () => {
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #ff9933' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <strong style={{ fontSize: '1.4rem', color: '#ff9933' }}>BJP Bengal (140 - 150 Seats)</strong>
-                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#ff9933' }}>Proj. Vote Share: ~39.5%</span>
+                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#ff9933' }}>Proj. Vote Share: ~45.0%</span>
                   </div>
                   <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Mandate Winning Wave. Jupiter\'s transit in the BJP formation\'s Udayam (Gemini) grants a powerful mandate-winning yoga, allowing them to breach previous barriers and secure a clear leading position.</p>
                 </div>
@@ -1468,7 +1468,7 @@ const ElectionAnalysis: React.FC = () => {
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #d32f2f' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <strong style={{ fontSize: '1.4rem', color: '#d32f2f' }}>LDF / CPI(M) Alliance (60 - 70 Seats)</strong>
-                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#d32f2f' }}>Proj. Vote Share: ~43.5%</span>
+                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#d32f2f' }}>Proj. Vote Share: ~39.0%</span>
                   </div>
                   <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Unexpected Friction. Rahu transit over the party formation Udayam (Aquarius) and 12th house Saturn effects create significant voter disconnect in industrial belts.</p>
                 </div>
@@ -1478,7 +1478,7 @@ const ElectionAnalysis: React.FC = () => {
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '5px solid #00b0ff' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <strong style={{ fontSize: '1.4rem', color: '#00b0ff' }}>UDF / Congress Alliance (75 - 85 Seats)</strong>
-                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#00b0ff' }}>Proj. Vote Share: ~39.0%</span>
+                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#00b0ff' }}>Proj. Vote Share: ~43.5%</span>
                   </div>
                   <p style={{ marginTop: '0.75rem', fontSize: '1.35rem', lineHeight: '1.6', color: '#F8F9FA' }}>Surge in Gains. Supportive transits over the INC formation Udayam allow the alliance to capitalize on anti-incumbency waves across urban and southern Kerala.</p>
                 </div>
