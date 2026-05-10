@@ -101,6 +101,14 @@ class SynthesisEngine:
         # Load Party Data
         self.party_data = self._load_party_data()
 
+        self.house_lords = {
+            1: "Mars", 2: "Venus", 3: "Mercury", 4: "Moon",
+            5: "Sun", 6: "Mercury", 7: "Venus", 8: "Mars",
+            9: "Jupiter", 10: "Saturn", 11: "Saturn", 12: "Jupiter"
+        }
+        
+        self.intent = self._detect_intent()
+
     def _load_party_data(self):
         import json
         try:
@@ -148,14 +156,6 @@ class SynthesisEngine:
         if self._get_house_num(moon_pos, f_udayam) == 8: score -= 25 # Emotional/Public backlash
         
         return max(0, min(100, score))
-        
-        self.house_lords = {
-            1: "Mars", 2: "Venus", 3: "Mercury", 4: "Moon",
-            5: "Sun", 6: "Mercury", 7: "Venus", 8: "Mars",
-            9: "Jupiter", 10: "Saturn", 11: "Saturn", 12: "Jupiter"
-        }
-        
-        self.intent = self._detect_intent()
 
     def _extract_rasi(self, data):
         if isinstance(data, dict): return data.get("rasi_num", 1)
@@ -1041,7 +1041,7 @@ class SynthesisEngine:
             if diff > 0:
                 # Continuous linear scaling that gives dominant teams proportional boost
                 # REFINDED: Calibrated to hit 250s for strength ~22 (like India vs NZ) 
-                added = diff * 10.0 + (diff * 1.5 if diff > 10.0 else 0)
+                added = diff * 8.0 + (diff * 1.0 if diff > 10.0 else 0)
             else:
                 added = diff * 15.0  # Weak strengths get heavy penalties
             
@@ -1074,9 +1074,6 @@ class SynthesisEngine:
             if strength > 15:
                 # Strong planets (L1/L7) use a favorable multiplier
                 adj = int(eff_rays * 0.6)
-                # SPORTS ENHANCEMENT: Mars is the absolute significator for sports aggression.
-                if lord == "Mars":
-                    adj += 20 # Direct aggression boost for Mars in competition mode
             else:
                 # Weaker planets use a punitive multiplier
                 adj = -int(eff_rays * 0.4) if ray_mult <= 1 else int(eff_rays * 0.2)
