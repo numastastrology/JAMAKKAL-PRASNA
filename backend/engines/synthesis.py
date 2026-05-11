@@ -901,35 +901,41 @@ class SynthesisEngine:
         text = self.query_text.lower()
         import re
         
-        # 1. Try to find explicit "Team A" / "Team B" format
-        match_a = re.search(r'team a\s*[:\-]?\s*([^\n]+)', text, flags=re.I)
-        match_b = re.search(r'team b\s*[:\-]?\s*([^\n]+)', text, flags=re.I)
+        # 1. Prioritize provided Team A/B from input data
+        raw_team_a = self.jam.get("competition_team_a")
+        raw_team_b = self.jam.get("competition_team_b")
+        a_captain = self.jam.get("competition_team_a_captain")
+        b_captain = self.jam.get("competition_team_b_captain")
         
-        if match_a and match_b:
-            names = [match_a.group(1).strip(), match_b.group(1).strip()]
+        if raw_team_a and raw_team_b:
+            if a_captain: raw_team_a += f" ({a_captain})"
+            if b_captain: raw_team_b += f" ({b_captain})"
+            res["team_a"], res["team_b"] = raw_team_a, raw_team_b
         else:
-            match_between = re.search(r'between\s+(.+?)\s+(?:and|vs\.?)\s+(.+)', text, flags=re.I)
-            if match_between:
-                names = [match_between.group(1).strip(), match_between.group(2).strip()]
-            else:
-                names = re.split(r'\svs\.?\s|\sand\s', text)
-        
-        if len(names) >= 2:
-            # Clean names more aggressively: strip after newline, venue, or contextual phrases
-            def clean_team_name(raw):
-                n = raw.strip()
-                # Strip after newline or period
-                n = re.split(r'[\n\.]', n)[0].strip()
-                # Strip after contextual keywords (venue, match details, toss info etc.)
-                n = re.split(r'\s+(?:at|in|venue|won|toss|match|vs|and who|elected|bat|field|cricket|today|tomorrow|between)\b', n, flags=re.I)[0].strip()
-                # Remove leading articles and noise words
-                n = re.sub(r'^(the|who|will|match|between|is|a|an)\s+', '', n, flags=re.I).strip()
-                # Title-case the result
-                return n.title()
+            # Fallback to query parsing
+            match_a = re.search(r'team a\s*[:\-]?\s*([^\n]+)', text, flags=re.I)
+            match_b = re.search(r'team b\s*[:\-]?\s*([^\n]+)', text, flags=re.I)
             
-            names = [clean_team_name(n) for n in names[:2] if n]
+            if match_a and match_b:
+                names = [match_a.group(1).strip(), match_b.group(1).strip()]
+            else:
+                match_between = re.search(r'between\s+(.+?)\s+(?:and|vs\.?)\s+(.+)', text, flags=re.I)
+                if match_between:
+                    names = [match_between.group(1).strip(), match_between.group(2).strip()]
+                else:
+                    names = re.split(r'\svs\.?\s|\sand\s', text)
+            
             if len(names) >= 2:
-                res["team_a"], res["team_b"] = names[0], names[1]
+                def clean_team_name(raw):
+                    n = raw.strip()
+                    n = re.split(r'[\n\.]', n)[0].strip()
+                    n = re.split(r'\s+(?:at|in|venue|won|toss|match|vs|and who|elected|bat|field|cricket|today|tomorrow|between)\b', n, flags=re.I)[0].strip()
+                    n = re.sub(r'^(the|who|will|match|between|is|a|an)\s+', '', n, flags=re.I).strip()
+                    return n.title()
+                
+                names = [clean_team_name(n) for n in names[:2] if n]
+                if len(names) >= 2:
+                    res["team_a"], res["team_b"] = names[0], names[1]
         
         raw_team_a = res.get("team_a", "Team A")
         raw_team_b = res.get("team_b", "Team B")
@@ -938,12 +944,6 @@ class SynthesisEngine:
         venue_bonus = 0
         lat = self.jam.get("lat", 0)
         lon = self.jam.get("lon", 0)
-        
-        # Robust detection: Check venue name OR coordinates
-        # Ahmedabad: approx 23.0N, 72.5E
-        # Mumbai (Wankhede): approx 18.9N, 72.8E
-        # Bangalore (Chinnaswamy): approx 12.9N, 77.5E
-        # Kolkata (Eden): approx 22.5N, 88.3E
         
         is_high_scoring_geo = (
             (22.9 <= lat <= 23.1 and 72.4 <= lon <= 72.7) or # Ahmedabad
@@ -955,7 +955,12 @@ class SynthesisEngine:
         
         high_score_venues = ["chinnaswamy", "eden gardens", "bangalore", "kolkata", "ahmedabad", "chennai", "chepauk", "wankhede", "mumbai"]
         
-        if is_high_scoring_geo or any(v in text.lower() for v in high_score_venues):
+        clean_text = text
+        for n in [raw_team_a, raw_team_b, self.jam.get("competition_team_a", ""), self.jam.get("competition_team_b", "")]:
+            if n:
+                clean_text = clean_text.replace(n.lower(), "")
+        
+        if is_high_scoring_geo or any(v in clean_text for v in high_score_venues):
             venue_bonus = 40 # Standardized boost for high-scoring T20 venues
             print(f"DEBUG: Venue bonus of {venue_bonus} applied (Geo Match: {is_high_scoring_geo})")
         
@@ -968,18 +973,15 @@ class SynthesisEngine:
         def get_total_strength(lord, reference_rasi):
             strength = self._get_planet_strength_score(lord, reference_rasi)
             
-            # House Occupant Bonus (Including Jamakkol Planets)
             occ_bonus = 0
             for p, p_rasi in self.positions.items():
-                # Correctly distinguish between Transit and Jamakkol/Outer planets
                 is_jama = "Jama" in p
                 if p_rasi == reference_rasi:
-                    # Normalized planet name for lookup
                     norm_p = p.replace("Jama ", "")
                     
                     if self.EXALTATION_SIGNS.get(norm_p) == reference_rasi or reference_rasi in self.OWN_SIGNS.get(norm_p, []):
                         val = 3.5 if self.EXALTATION_SIGNS.get(norm_p) == reference_rasi else 2.0
-                        occ_bonus += (val * 1.5 if is_jama else val) # Jama planets have 1.5x impact in this prasna
+                        occ_bonus += (val * 1.5 if is_jama else val)
                     else:
                         val = 1.5
                         h_num = self._get_house_num(p_rasi, reference_rasi)
@@ -989,163 +991,106 @@ class SynthesisEngine:
                         else:
                             occ_bonus += (val * 1.5 if is_jama else val)
             
-            # Arudam Bonus
             aru_h = self._get_house_num(self.arudam, reference_rasi)
             aru_bonus = 0
-            if aru_h in [1, 10, 11, 5, 9]: aru_bonus = 3.0
-            elif aru_h in [3, 6]: aru_bonus = 1.5
-            elif aru_h in [8, 12]: aru_bonus = -2.0
+            # INCREASED Arudam Impact for success identification
+            if aru_h in [1, 10, 11, 5, 9]: aru_bonus = 4.5
+            elif aru_h in [3, 6]: aru_bonus = 2.0
+            elif aru_h in [8, 12]: aru_bonus = -3.0
             
-            # Support Lords (3, 6, 11)
             h3 = (reference_rasi + 2) % 12 or 12
             h6 = (reference_rasi + 5) % 12 or 12
             h11 = (reference_rasi + 10) % 12 or 12
             support_bonus = sum([self._get_planet_strength_score(self.house_lords[r], reference_rasi) for r in [h3, h6, h11]]) / 3.0
             
-            # Kavippu Blockage
             k_penalty = 0
-            if self.kavippu == reference_rasi: k_penalty = -1.5
-            elif self.kavippu == (reference_rasi + 6)%12 or 12: k_penalty = 1.5 # Opponent blocked
+            # INCREASED Kavippu Impact for blockage identification
+            if self.kavippu == reference_rasi: k_penalty = -3.0
+            elif self.kavippu == (reference_rasi + 6)%12 or 12: k_penalty = 3.0
             
             return strength + occ_bonus + aru_bonus + support_bonus + k_penalty
 
-        # Identify Lords for Team A and Team B
-        # res["team_a"] is alphabetical min, res["team_b"] is alphabetical max
-        # Standard: Team A (House 1 / Lagna), Team B (House 7 / Descendant)
         l1_strength = get_total_strength(l1, self.udayam)
         l7_strength = get_total_strength(l7, h7_rasi)
 
-        # 4. Score Range logic
-        def get_score_range(lord, is_lagna, strength, base_rasi):
-            # House Modifiers for current house
-            h2 = (base_rasi + 1) % 12 or 12
-            h10 = (base_rasi + 9) % 12 or 12
-            
-            # H2 malefic check
-            sat_on_h2 = self.positions.get("Jama Saturn", self.positions.get("Saturn")) == h2
-            sat_dig = h2 in self.OWN_SIGNS.get("Saturn", []) or self.EXALTATION_SIGNS.get("Saturn") == h2
-            h2_mal = (sat_on_h2 and not sat_dig) or self.positions.get("Jama Mars", self.positions.get("Mars")) == h2 or self.positions.get("Jama Snake", self.positions.get("Snake")) == h2
-            
-            # H10 benefic check
-            h10_ben = self.positions.get("Jama Jupiter", self.positions.get("Jupiter")) == h10 or self.positions.get("Jama Venus", self.positions.get("Venus")) == h10 or self.positions.get("Jama Mercury", self.positions.get("Mercury")) == h10
-            
-            # Moon affliction
-            m_pos = self.positions.get("Jama Moon", self.positions.get("Moon", 1))
-            moon_aff = self._get_house_num(m_pos, base_rasi) in [6, 8, 12] or self.positions.get("Jama Snake", self.positions.get("Snake")) == m_pos
-
-            # --- Calculation ---
-            diff = strength - 10.0
-            # High dynamic range for modern T20/ODI matches
-            # Balanced scaling: sensitive but capped rationally
-            # High precision scaling to match actuals closer (e.g. 250s high, 150s low)
-            if diff > 0:
-                # Continuous linear scaling that gives dominant teams proportional boost
-                # REFINDED: Calibrated to hit 250s for strength ~22 (like India vs NZ) 
-                added = diff * 8.0 + (diff * 1.0 if diff > 10.0 else 0)
-            else:
-                added = diff * 15.0  # Weak strengths get heavy penalties
-            
-            # Baseline 88 for modern ODI/T20 mix
-            # Moderated venue bonus (0.6 instead of 0.7)
-            base_mid = max(80, min(315, int(88 + added + venue_bonus * 0.6)))
-            
-            b_min, b_max = base_mid - 7, base_mid + 8
-            # Extremely tight house impact for sports to preserve foundational strength gap
-            house_impact = 3 
-            if h2_mal: b_min -= house_impact; b_max -= house_impact
-            if h10_ben: b_min += house_impact; b_max += house_impact
-            
-            # Rays
-            lord_rays = self.PLANET_RAYS.get(lord, 5)
-            lord_status = self.transits.get(lord, {}).get("status", "")
-            lord_rasi = self.positions.get(f"Jama {lord}", self.positions.get(lord, 1))
-            if "Exalted" in lord_status: ray_mult = 3
-            elif "Debilitated" in lord_status: ray_mult = 0
-            elif lord_rasi in self.OWN_SIGNS.get(lord, []): ray_mult = 2
-            else: ray_mult = 1
-            
-            if self._is_combust(lord) or "Retrograde" in (lord_status + self.transits.get(lord, {}).get("state", "")):
-                ray_mult *= 0.5
-            
-            eff_rays = lord_rays * ray_mult
-            # Precision Ray Adjustment for Competition Mode
-            # Unify multipliers for both Benefics and Malefics to avoid nature-bias
-            # A uniform multiplier (0.6) ensures foundational strength determines the winner.
-            if strength > 15:
-                # Strong planets (L1/L7) use a favorable multiplier
-                adj = int(eff_rays * 0.6)
-            else:
-                # Weaker planets use a punitive multiplier
-                adj = -int(eff_rays * 0.4) if ray_mult <= 1 else int(eff_rays * 0.2)
-            
-            # Ruling Planet "Blessing" Bonus (+10 runs)
-            # This matches the reasoning text for superior momentum
-            if lord == self.ruling_planet:
-                adj += 10
-            
-            # Final sanity catch for identical strengths: 
-            # If strengths are identical, use house placement of L1 vs L7 relative to Arudam/Udayam
-            # to break the tie in the scores/reasons.
-            
-            ray_min, ray_max = b_min + adj, b_max + adj
-            
-            # Moon
-            m_rays = self.PLANET_RAYS.get("Moon", 21)
-            eff_m = m_rays * (3 if self.positions.get("Moon") == self.EXALTATION_SIGNS.get("Moon") else 1)
-            m_adj = -int(eff_m * 0.15) if moon_aff else int(eff_m * 0.1)
-            
-            final_min, final_max = ray_min + m_adj, ray_max + m_adj
-            return f"{int(final_min)}-{int(final_max)}", f"{int(b_min)}-{int(b_max)}"
-
-        # 5. Symmetric Identity Scoring
-        def get_team_scores(team_id):
-             # CRITICAL FIX: No more averaging. 
-             # Team A is always House 1 (L1), Team B is always House 7 (L7)
-             if team_id == "a":
-                 # Score for Team A at House 1
-                 return get_score_range(l1, True, l1_strength, self.udayam)
-             else:
-                 # Score for Team B at House 7
-                 return get_score_range(l7, False, l7_strength, h7_rasi)
-
-        res["team_a_score"], res["team_a_score_noray"] = get_team_scores("a")
-        res["team_b_score"], res["team_b_score_noray"] = get_team_scores("b")
-        
-        # --- NEW TOSS-BASED BATTING ORDER LOGIC ---
-        # Team A is always House 1 (L1), Team B is always House 7 (L7)
-        # We determine who bats first based on toss_winner and toss_decision
-        
+        # Pre-calculate toss info for score_range
         toss_winner_captured = self.jam.get("toss_winner")
-        toss_decision_captured = self.jam.get("toss_decision", "").lower() # 'bat' or 'field'
+        toss_decision_captured = self.jam.get("toss_decision", "").lower()
         
-        # Normalize captured toss winner to identify if it's Team A or B
         is_team_a_toss_win = False
         is_team_b_toss_win = False
-        
         if toss_winner_captured:
             tw_lower = toss_winner_captured.lower()
             if raw_team_a.lower() in tw_lower or tw_lower in raw_team_a.lower():
                 is_team_a_toss_win = True
             elif raw_team_b.lower() in tw_lower or tw_lower in raw_team_b.lower():
                 is_team_b_toss_win = True
-
-        # logic: 
-        # If winner=A and decision=bat -> A bats first
-        # If winner=A and decision=field -> B bats first
-        # If winner=B and decision=bat -> B bats first
-        # If winner=B and decision=field -> A bats first
         
-        team_a_bats_first = True # Default
+        team_a_bats_first = True
         if is_team_a_toss_win:
             if "field" in toss_decision_captured or "bowl" in toss_decision_captured:
                 team_a_bats_first = False
-            else:
-                team_a_bats_first = True
         elif is_team_b_toss_win:
             if "bat" in toss_decision_captured:
                 team_a_bats_first = False
+
+        # 4. Scoring Logic
+        def get_score_range(lord, is_lagna, strength, base_rasi):
+            # Base score mid-point slightly increased for better high-score accuracy
+            base_mid = 85.0 
+            
+            # Multiplier for strength gap (Balanced range)
+            diff = strength - 10.0
+            if diff >= 0:
+                added = diff * 6.5
             else:
-                team_a_bats_first = True
+                added = diff * 12.0
+            
+            # Planet Rays (Aura) adjustment - Scaled (Max ~10-15 runs)
+            rays = self.PLANET_RAYS.get(lord, 10)
+            adj = (rays * 0.4) 
+            
+            # Moon Position Boost (Tithi/Amshas)
+            moon_rasi = self.positions.get("Moon", 1)
+            if moon_rasi in [2, 4, 7, 9, 12]:
+                adj += 3
+            
+            # Ruling Planet "Blessing" Bonus (Dampened to +4)
+            if lord == self.ruling_planet:
+                adj += 4
+                
+            # Toss Winner Advantage (+3 runs)
+            is_team_a = is_lagna
+            team_won_toss = (is_team_a and is_team_a_toss_win) or (not is_team_a and is_team_b_toss_win)
+            if team_won_toss:
+                adj += 3
+            
+            # Chase Resilience Bonus (INCREASED to +8 for chasing teams)
+            is_batting_second = (is_lagna and not team_a_bats_first) or (not is_lagna and team_a_bats_first)
+            if is_batting_second:
+                adj += 8 
+            
+            # Venue Adjustment (Scaled to 0.6 of bonus to reach 200+ on fast pitches)
+            venue_adj = venue_bonus * 0.6
+            
+            mid = base_mid + added + adj + venue_adj
+            
+            # Dynamic Spread
+            spread = 15.0 if strength > 15 else 20.0
+            
+            low = int(mid - spread/2)
+            high = int(mid + spread/2)
+            return f"{low}-{high}", f"{int(mid)}-{int(mid)}"
+
+        # 5. Symmetric Identity Scoring
+        def get_team_scores(team_id):
+             if team_id == "a":
+                 return get_score_range(l1, True, l1_strength, self.udayam)
+             else:
+                 return get_score_range(l7, False, l7_strength, h7_rasi)
+
+        res["team_a_score"], res["team_a_score_noray"] = get_team_scores("a")
+        res["team_b_score"], res["team_b_score_noray"] = get_team_scores("b")
         
         if team_a_bats_first:
             res["bat_first"], res["bat_second"] = raw_team_a, raw_team_b
@@ -1153,7 +1098,6 @@ class SynthesisEngine:
             res["bat_second_score"] = res["team_b_score"]
             res["bat_first_score_noray_val"] = res["team_a_score_noray"]
             res["bat_second_score_noray_val"] = res["team_b_score_noray"]
-            # Map strengths correctly for reasons
             bat1_strength, bat2_strength = l1_strength, l7_strength
             bat1_lord, bat2_lord = l1, l7
         else:
@@ -1165,26 +1109,16 @@ class SynthesisEngine:
             bat1_strength, bat2_strength = l7_strength, l1_strength
             bat1_lord, bat2_lord = l7, l1
 
-        # Build more elaborate reasons
         def get_team_reason(lord_name, strength):
             reason_str = f"&bull; <b>Primary Significator:</b> {lord_name}."
-            
-            # Planet specific descriptions
             planet_desc = ""
-            if lord_name == "Mars":
-                planet_desc = "As the planet of aggression and physical drive, Mars provides critical explosive energy and proactive strike rates."
-            elif lord_name == "Saturn":
-                planet_desc = "Saturn offers calculated endurance and clinical defensive stability during pressure situations."
-            elif lord_name == "Jupiter":
-                planet_desc = "Jupiter brings expansive momentum and tactical wisdom, guiding the team toward optimal scoring opportunities."
-            elif lord_name == "Sun":
-                planet_desc = "The Sun provides leadership authority and consistent performance at the top of the order."
-            elif lord_name == "Venus":
-                planet_desc = "Venus ensures technical elegance, smooth transitions, and high impact during power-plays."
-            elif lord_name == "Mercury":
-                planet_desc = "Mercury enhances quick decision-making, rapid fielding responses, and precise running between wickets."
-            elif lord_name == "Moon":
-                planet_desc = "The Moon influences the psychological rhythm and adaptive capacity of the team under changing pitch conditions."
+            if lord_name == "Mars": planet_desc = "As the planet of aggression and physical drive, Mars provides critical explosive energy and proactive strike rates."
+            elif lord_name == "Saturn": planet_desc = "Saturn offers calculated endurance and clinical defensive stability during pressure situations."
+            elif lord_name == "Jupiter": planet_desc = "Jupiter brings expansive momentum and tactical wisdom, guiding the team toward optimal scoring opportunities."
+            elif lord_name == "Sun": planet_desc = "The Sun provides leadership authority and consistent performance at the top of the order."
+            elif lord_name == "Venus": planet_desc = "Venus ensures technical elegance, smooth transitions, and high impact during power-plays."
+            elif lord_name == "Mercury": planet_desc = "Mercury enhances quick decision-making, rapid fielding responses, and precise running between wickets."
+            elif lord_name == "Moon": planet_desc = "The Moon influences the psychological rhythm and adaptive capacity of the team under changing pitch conditions."
 
             if strength > 18:
                 reason_str += f"<br/>&bull; <b>Astrological Profile:</b> {lord_name} exhibits highly dominant planetary momentum (Strength: {strength:.1f}). {planet_desc} This indicates aggressive, high-scoring potential and strong control over the match rhythm."
@@ -1200,76 +1134,49 @@ class SynthesisEngine:
 
         res["bat_first_score_reason"] = get_team_reason(bat1_lord, bat1_strength)
         res["bat_second_score_reason"] = get_team_reason(bat2_lord, bat2_strength)
-        
-        # Legacy mappings for generic reports
         res["team_a_score_reason"] = get_team_reason(l1, l1_strength)
         res["team_b_score_reason"] = get_team_reason(l7, l7_strength)
-        
-        # Missing keys for regression testing
         res["team_a_interp"] = "Strong" if l1_strength > 12 else "Moderate" if l1_strength > 8 else "Weak"
         res["team_b_interp"] = "Strong" if l7_strength > 12 else "Moderate" if l7_strength > 8 else "Weak"
-        
-        # New: Detailed Reasons for Cricket Summary
         res["bat_first_reason"] = f"&bull; <b>Toss / Initiative Alignment:</b> {res['bat_first']} is aligned with the active match cycle, indicating the initial burst of physical energy, proactive momentum, and the astrological drive to set the target."
-        
         res["bat_first_score_reason_noray"] = res["bat_first_score_reason"] + "<br/>&bull; <b>Note:</b> This prediction represents the raw foundational strength without the influence of external planetary rays."
         res["bat_second_score_reason_noray"] = res["bat_second_score_reason"] + "<br/>&bull; <b>Note:</b> This prediction represents the raw foundational strength without the influence of external planetary rays."
         
-        # 6. Winner & Toss
-        # CRITICAL FIX: Base winner on the actual calculated score midpoints.
-        # This ensures the "Predicted Winner" always matches the "Predicted Score" in the report.
-        def mid(r): mn, mx = map(int, r.split('-')); return (mn+mx)/2
-        a_mid = mid(res["team_a_score"])
-        b_mid = mid(res["team_b_score"])
-        
-        # CRITICAL: Identify teams by their name-based sorting to maintain consistency with res["team_a_score"]
-        # res["team_a_score"] was calculated using raw_team_a (which is alphabetical min)
-        # res["team_b_score"] was calculated using raw_team_b (which is alphabetical max)
+        def mid_val(r): mn, mx = map(int, r.split('-')); return (mn+mx)/2
+        a_mid = mid_val(res["team_a_score"])
+        b_mid = mid_val(res["team_b_score"])
         
         res["predicted_winner"] = raw_team_a if a_mid > b_mid else raw_team_b
-        
         score_gap = abs(a_mid - b_mid)
         res["predicted_margin"] = "Definitive victory" if score_gap > 25 else "Stable victory" if score_gap > 12 else "Very narrow, close-fought victory"
         
-        # Add special close-fought reasoning
         closeness_text = ""
         if score_gap < 15:
             closeness_text = f"<br/>&bull; <b>Match Intensity:</b> A <b>very close-fought contest</b> is indicated (Gap: {int(score_gap)} runs), likely decided in the final over."
         elif score_gap < 25:
             closeness_text = "<br/>&bull; <b>Match Intensity:</b> A highly competitive match is indicated, with both teams showing strong periods of planetary dominance."
         
-        # Add No-Ray scores for PDF
         res["bat_first_score_noray"] = res["bat_first_score_noray_val"]
         res["bat_second_score_noray"] = res["bat_second_score_noray_val"]
-        
         res["toss_winner"] = toss_winner_captured or (raw_team_a if l1_strength > l7_strength else raw_team_b)
         
-        # Enhanced Toss Logic Reasoning
         mer_strength = self._get_planet_strength_score("Mercury")
-        toss_logic = f"&bull; <b>Mercury Influence:</b> Mercury (the planet of calculation and decisions) strength is {mer_strength:.1f}, "
-        if mer_strength > 7:
-            toss_logic += "indicating a sharp, calculated decision during the toss."
-        elif mer_strength > 4:
-            toss_logic += "suggesting a steady and balanced approach to the toss decision."
-        else:
-            toss_logic += "indicating potential unpredictability or a high-pressure decision environment."
-            
+        toss_logic = f"&bull; <b>Mercury Influence:</b> Mercury strength is {mer_strength:.1f}, "
+        if mer_strength > 7: toss_logic += "indicating a sharp, calculated decision during the toss."
+        elif mer_strength > 4: toss_logic += "suggesting a steady and balanced approach to the toss decision."
+        else: toss_logic += "indicating potential unpredictability or a high-pressure decision environment."
         toss_logic += f"<br/>&bull; <b>Momentum Alignment:</b> The toss outcome aligns with the underlying {self.ruling_planet}-driven planetary momentum of the match."
         res["toss_reason"] = self.jam.get("toss_reason") or toss_logic
         
-        # Build elaborate final verdict
         winner_name = res['predicted_winner']
-        loser_name = raw_team_b if winner_name == raw_team_a else raw_team_a
         win_lord = l1 if winner_name == raw_team_a else l7
         lose_lord = l7 if winner_name == raw_team_a else l1
         win_strength = l1_strength if winner_name == raw_team_a else l7_strength
         lose_strength = l7_strength if winner_name == raw_team_a else l1_strength
-        
         strength_desc = "significantly stronger" if score_gap > 30 else "moderately stronger" if score_gap > 15 else "slightly stronger"
         
         verdict = f"&bull; <b>Final Verdict:</b> {winner_name} is predicted to win this encounter. "
         verdict += f"The primary significator <b>{win_lord}</b> (Strength: {win_strength:.1f}) is {strength_desc} than the opponent's <b>{lose_lord}</b> (Strength: {lose_strength:.1f}). "
-        
         if winner_name == raw_team_a:
             verdict += f"<br/>&bull; <b>Lagna Dominance:</b> As the representative of House 1 (Lagna), {winner_name} controls the initiation of the match, demonstrating superior technical stability and planetary momentum to set/chase the target effectively."
         else:
@@ -1277,7 +1184,6 @@ class SynthesisEngine:
             
         verdict += closeness_text
         res["outcome_reason"] = verdict
-        
         return res
 
     def _calculate_house_rays(self, target_rasi):
@@ -1364,8 +1270,8 @@ class SynthesisEngine:
         FRIENDS = {"Sun": ["Jupiter", "Mars", "Moon"], "Moon": ["Sun", "Mercury"], "Mars": ["Moon", "Jupiter", "Sun"], "Mercury": ["Rahu", "Venus", "Sun"], "Jupiter": ["Sun", "Moon", "Mars"], "Venus": ["Mercury", "Saturn", "Rahu"], "Saturn": ["Venus", "Mercury", "Rahu"]}
         ENEMIES = {"Sun": ["Saturn", "Venus"], "Moon": ["Rahu", "Ketu"], "Mars": ["Mercury"], "Mercury": ["Moon"], "Jupiter": ["Mercury", "Venus"], "Venus": ["Sun", "Moon"], "Saturn": ["Sun", "Mars", "Moon"]}
         
-        if planet in FRIENDS.get(rp, []): score += 3.0
-        elif planet in ENEMIES.get(rp, []): score -= 3.0
+        if planet in FRIENDS.get(rp, []): score += 1.5
+        elif planet in ENEMIES.get(rp, []): score -= 1.5
         
         # REMOVED CAP: Strength calculation needs full range for sports accuracy
         return max(0.5, score)
